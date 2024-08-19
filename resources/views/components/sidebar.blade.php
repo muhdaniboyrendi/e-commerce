@@ -50,22 +50,22 @@
                     <div class="collapse" id="base">
                         <ul class="nav nav-collapse">
                             <li>
-                                <a href="components/avatars.html">
+                                <a href="/products">
                                     <span class="sub-item">All</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="components/avatars.html">
+                                <a href="/products">
                                     <span class="sub-item">Pakaian Atas</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="components/avatars.html">
+                                <a href="/products">
                                     <span class="sub-item">Pakaian Bawah</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="components/avatars.html">
+                                <a href="/products">
                                     <span class="sub-item">Aksesoris</span>
                                 </a>
                             </li>
@@ -73,14 +73,7 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a href="widgets.html">
-                        <i class="fas fa-cart-arrow-down"></i>
-                        <p>Keranjang</p>
-                        <span class="badge badge-info">4</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/dashboard">
+                    <a href="/pesanan">
                         <i class="fas fa-clipboard-list"></i>
                         <p>Pesanan</p>
                         <span class="badge badge-danger">0</span>
@@ -95,24 +88,18 @@
                     <h4 class="text-section">Penjual</h4>
                 </li>
                 <li class="nav-item">
-                    <a href="/dashboard">
+                    <a href="/kelola_produk">
                         <i class="fas fa-luggage-cart"></i>
                         <p>Kelola Produk</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="/dashboard">
+                    <a href="/kelola_pesanan">
                         <i class="fas fa-clipboard-list"></i>
                         <p>Pesanan</p>
                         <span class="badge badge-danger">0</span>
                         <span class="badge badge-warning">0</span>
                         <span class="badge badge-success">0</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/dashboard">
-                        <i class="fas fa-cog"></i>
-                        <p>Setting</p>
                     </a>
                 </li>
             </ul>

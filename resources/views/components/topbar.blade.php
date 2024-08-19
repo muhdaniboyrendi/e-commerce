@@ -52,9 +52,6 @@
                         <li>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="#">Profile Saya</a>
-                            <a class="dropdown-item" href="#">Keranjang Saya</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Account Setting</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="#">Sign up</a>
                             <a class="dropdown-item" href="#">Sign in</a>
