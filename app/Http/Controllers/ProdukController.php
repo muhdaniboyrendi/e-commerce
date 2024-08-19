@@ -17,4 +17,8 @@ class ProdukController extends Controller
     public function create(){
         return view('customer.beli');
     }
+
+    public function status(){
+        return view('customer.pesanan');
+    }
 }

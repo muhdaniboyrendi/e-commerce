@@ -11,16 +11,17 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 Route::get('/', [HomeController::class, 'index']);
 Route::get('/products', [ProdukController::class, 'index']);
 Route::get('/detail_produk', [ProdukController::class, 'show']);
-Route::get('/pesanan', [ProdukController::class, 'index']);
+Route::get('/pesanan', [ProdukController::class, 'status']);
 Route::get('/beli', [ProdukController::class, 'create']);
 
 
 // penjual
 Route::get('/dashboard', [DashboardController::class, 'index']);
-Route::get('/kelola_produk', [PenjualController::class, 'index']);
-Route::get('/kelola_pesanan', [PenjualController::class, 'index']);
+Route::get('/kelola_produk', [PenjualController::class, 'produk']);
+Route::get('/kelola_pesanan', [PenjualController::class, 'pesanan']);
+Route::get('/profile', [PenjualController::class, 'profile']);
+Route::get('/edit_profile', [PenjualController::class, 'edit']);
 
 
 // auth
-Route::get('/login', [DashboardController::class, 'index']);
-Route::get('/profil', [DashboardController::class, 'index']);
+Route::get('/login', [DashboardController::class, 'login']);
