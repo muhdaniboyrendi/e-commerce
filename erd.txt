@@ -1,0 +1,83 @@
+Berikut adalah contoh **Entity-Relationship Diagram (ERD)** sederhana untuk sebuah website toko online:
+
+### Entitas dan Relasinya:
+
+1. **User (Pengguna)**
+   - `user_id` (PK)
+   - `username`
+   - `password`
+   - `email`
+   - `alamat`
+   - `no_telepon`
+   - `role` (Pembeli / Penjual)
+
+2. **Produk**
+   - `produk_id` (PK)
+   - `nama_produk`
+   - `deskripsi`
+   - `harga`
+   - `stok`
+   - `kategori_id` (FK)
+   - `penjual_id` (FK)
+
+3. **Kategori**
+   - `kategori_id` (PK)
+   - `nama_kategori`
+
+4. **Keranjang**
+   - `keranjang_id` (PK)
+   - `user_id` (FK)
+   - `total_harga`
+
+5. **Keranjang_Detail**
+   - `keranjang_detail_id` (PK)
+   - `keranjang_id` (FK)
+   - `produk_id` (FK)
+   - `jumlah`
+   - `harga`
+
+6. **Pesanan (Order)**
+   - `pesanan_id` (PK)
+   - `user_id` (FK)
+   - `total_harga`
+   - `tanggal_pesanan`
+   - `status_pesanan`
+
+7. **Pesanan_Detail**
+   - `pesanan_detail_id` (PK)
+   - `pesanan_id` (FK)
+   - `produk_id` (FK)
+   - `jumlah`
+   - `harga`
+
+8. **Pembayaran**
+   - `pembayaran_id` (PK)
+   - `pesanan_id` (FK)
+   - `tanggal_pembayaran`
+   - `jumlah_pembayaran`
+   - `metode_pembayaran`
+
+9. **Pengiriman**
+   - `pengiriman_id` (PK)
+   - `pesanan_id` (FK)
+   - `tanggal_pengiriman`
+   - `status_pengiriman`
+   - `alamat_pengiriman`
+
+### Hubungan antar Entitas:
+- **User** dan **Pesanan** memiliki relasi `1:M` (satu pengguna bisa memiliki banyak pesanan).
+- **User** dan **Keranjang** memiliki relasi `1:1` (satu pengguna memiliki satu keranjang).
+- **Kategori** dan **Produk** memiliki relasi `1:M` (satu kategori bisa memiliki banyak produk).
+- **Produk** dan **Keranjang_Detail** memiliki relasi `1:M` (satu produk bisa muncul di banyak detail keranjang).
+- **Keranjang** dan **Keranjang_Detail** memiliki relasi `1:M` (satu keranjang bisa memiliki banyak detail).
+- **Pesanan** dan **Pesanan_Detail** memiliki relasi `1:M` (satu pesanan bisa memiliki banyak detail pesanan).
+- **Pesanan** dan **Pembayaran** memiliki relasi `1:1` (satu pesanan memiliki satu pembayaran).
+- **Pesanan** dan **Pengiriman** memiliki relasi `1:1` (satu pesanan memiliki satu pengiriman).
+- **Produk** dan **Pesanan_Detail** memiliki relasi `1:M` (satu produk bisa muncul di banyak detail pesanan).
+- **User** dan **Produk** memiliki relasi `1:M` (satu penjual bisa memiliki banyak produk).
+
+### Visualisasi ERD
+
+Sayangnya, saya tidak bisa menggambar diagram secara langsung di sini, tetapi Anda bisa menggunakan tool seperti **dbdiagram.io**, **Lucidchart**, **Draw.io**, atau software **MySQL Workbench** untuk menggambar ERD tersebut berdasarkan deskripsi di atas. 
+
+Jika Anda ingin ERD yang lebih kompleks, Anda bisa menambahkan entitas lain seperti **Review Produk**, **Wishlist**, atau **Promo**.
