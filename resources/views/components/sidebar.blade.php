@@ -23,13 +23,13 @@
     <div class="sidebar-wrapper scrollbar scrollbar-inner">
         <div class="sidebar-content">
             <ul class="nav nav-secondary">
-                <li class="nav-item active">
+                <li class="nav-item {{ $active == "home" ? 'active' : '' }}">
                     <a href="/">
                         <i class="fas fa-home"></i>
                         <p>Home</p>
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item {{ $active == "dashboard" ? 'active' : '' }}">
                     <a href="/dashboard">
                         <i class="fas fa-desktop"></i>
                         <p>Dashboard</p>
@@ -72,7 +72,7 @@
                         </ul>
                     </div>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item {{ $active == "pesanan" ? 'active' : '' }}">
                     <a href="/pesanan">
                         <i class="fas fa-clipboard-list"></i>
                         <p>Pesanan</p>
@@ -87,13 +87,13 @@
                     </span>
                     <h4 class="text-section">Penjual</h4>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item {{ $active == "kelola_produk" ? 'active' : '' }}">
                     <a href="/kelola_produk">
                         <i class="fas fa-luggage-cart"></i>
                         <p>Kelola Produk</p>
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item {{ $active == "kelola_pesanan" ? 'active' : '' }}">
                     <a href="/kelola_pesanan">
                         <i class="fas fa-clipboard-list"></i>
                         <p>Pesanan</p>

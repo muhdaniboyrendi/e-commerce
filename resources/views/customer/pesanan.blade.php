@@ -1,4 +1,6 @@
 <x-layout>
+    <x-slot:title>{{ $title }}</x-slot>
+    <x-slot:active>{{ $active }}</x-slot>
       
     <div class="container">
         <div class="page-inner">
@@ -80,7 +82,6 @@
                         <a href="#" class="btn btn-primary">Hubungi Penjual</a>
                         <a href="#" class="btn btn-outline-secondary">Kembali ke Beranda</a>
                     </div>
-                </div>
                 </div>
             </div>
         </div>

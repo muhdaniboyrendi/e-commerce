@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>Toko Erlan | Dashboard</title>
+        <title>Toko Erlan | {{ $title }}</title>
         <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport"/>
         <link rel="icon" href="assets/img/kaiadmin/favicon.ico" type="image/x-icon"/>
 
@@ -37,7 +37,7 @@
     <body>
         <div class="wrapper">
 
-            <x-sidebar></x-sidebar>
+            <x-sidebar><x-slot:active>{{ $active }}</x-slot></x-sidebar>
             <div class="main-panel">
                 <div class="main-header">
                     <x-headerlogo></x-headerlogo>

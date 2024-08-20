@@ -1,4 +1,6 @@
 <x-layout>
+  <x-slot:title>{{ $title }}</x-slot>
+  <x-slot:active>{{ $active }}</x-slot>
       
     <div class="container">
       <div class="page-inner">
