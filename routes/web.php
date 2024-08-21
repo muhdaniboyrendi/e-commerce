@@ -18,6 +18,7 @@ Route::get('/beli', [ProdukController::class, 'create']);
 // penjual
 Route::get('/dashboard', [DashboardController::class, 'index']);
 Route::get('/kelola_produk', [PenjualController::class, 'produk']);
+Route::post('/kelola_produk', [PenjualController::class, 'store']);
 Route::get('/kelola_pesanan', [PenjualController::class, 'pesanan']);
 Route::get('/profile', [PenjualController::class, 'profile']);
 Route::get('/edit_profile', [PenjualController::class, 'edit']);
