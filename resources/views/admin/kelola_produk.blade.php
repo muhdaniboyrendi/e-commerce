@@ -12,16 +12,6 @@
                 </div>
             @endif
 
-            <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-2">
-                <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                      <li class="breadcrumb-item"><a href="#">Toko Erlan</a></li>
-                      <li class="breadcrumb-item"><a href="#">Produk</a></li>
-                      <li class="breadcrumb-item"><a href="#">Aksesoris</a></li>
-                      <li class="breadcrumb-item active" aria-current="page">Asus Vivobook OLED 15</li>
-                    </ol>
-                </nav>
-            </div>
             <h1 class="mb-4">Kelola Produk</h1>
             
             <div class="row mb-3">
@@ -59,8 +49,12 @@
                             <td>{{ $variant['stock'] }}</td>
                         @endforeach
                         <td>
-                            <button class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i></button>
-                            <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                            <form action="/hapus_produk/{{ $item['id'] }}" method="post" onsubmit="return confirm('Apakah Anda yakin ingin menghapus produk ini?');">
+                                @method('delete')
+                                @csrf
+                                <a href="/edit_produk/{{ $item['id'] }}" class="btn btn-xs btn-primary"><i class="fas fa-pen"></i></a>
+                                <button type="submit" id="btn-delete" class="btn btn-xs btn-danger"><i class="fas fa-trash-alt"></i></button>
+                            </form>
                         </td>
                     </tr>
                     @endforeach
