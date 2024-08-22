@@ -20,6 +20,7 @@ Route::get('/dashboard', [DashboardController::class, 'index']);
 Route::get('/kelola_produk', [PenjualController::class, 'produk']);
 Route::post('/kelola_produk', [PenjualController::class, 'store']);
 Route::delete('/hapus_produk/{product:id}', [PenjualController::class, 'destroy']);
+Route::get('/info_produk/{product:id}', [PenjualController::class, 'show']);
 Route::get('/edit_produk/{product:id}', [PenjualController::class, 'edit']);
 Route::put('/edit_produk/{product:id}', [PenjualController::class, 'update']);
 Route::get('/kelola_pesanan', [PenjualController::class, 'pesanan']);

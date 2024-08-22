@@ -6,12 +6,14 @@ use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\ProductVariant;
+use Illuminate\Support\Facades\Storage;
 
 class PenjualController extends Controller
 {
+    // halaman utama kelola produk
     public function produk()
     {
-        $products = Product::with(['category', 'product_variants'])->get();
+        $products = Product::with(['category', 'product_variants'])->paginate(10);
 
         $product = new Product();
         $categories = Category::all();
@@ -19,16 +21,16 @@ class PenjualController extends Controller
         return view('admin.kelola_produk', compact('product', 'categories', 'product_variant', 'products'), ['title' => 'Kelola Produk', 'active' => 'kelola_produk']);
     }
 
+    // fungsi tambah produk
     public function store(Request $request)
     {
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string|max:1000',
             'price' => 'required|numeric|min:0',
-            'category_id' => 'required|exists:categories,id',
             'image' => 'required|image|max:2048',
-            'product_variants.*.size' => 'required|string|max:50',
-            'product_variants.*.color' => 'required|string|max:50',
+            'category_id' => 'required|exists:categories,id',
+            'product_variants.*.name' => 'required|string|max:50',
             'product_variants.*.stock' => 'required|integer|min:0',
         ]);
     
@@ -36,14 +38,13 @@ class PenjualController extends Controller
             'name' => $validatedData['name'],
             'description' => $validatedData['description'],
             'price' => $validatedData['price'],
-            'category_id' => $validatedData['category_id'],
             'image' => $request->file('image')->store('product-images', 'public'),
+            'category_id' => $validatedData['category_id'],
         ]);
     
         foreach ($validatedData['product_variants'] as $variant) {
             $product->product_variants()->create([
-                'size' => $variant['size'],
-                'color' => $variant['color'],
+                'name' => $variant['name'],
                 'stock' => $variant['stock'],
             ]);
         }
@@ -51,6 +52,7 @@ class PenjualController extends Controller
         return redirect('/kelola_produk')->with('success', 'Produk baru berhasil ditambahkan!');
     }
 
+    // fungsi hapus produk
     public function destroy($id)
     {
         $product = Product::findOrFail($id);
@@ -60,55 +62,83 @@ class PenjualController extends Controller
         return redirect('/kelola_produk')->with('success', 'Produk berhasil dihapus!');
     }
 
-    public function edit($id)
+    // halaman detail produk
+    public function show($id)
     {
         $product = Product::with(['category', 'product_variants'])->findOrFail($id);
+        return view('admin.info_produk', compact('product'), ['title' => 'Detail Produk', 'active' => 'kelola_produk']);
+    }
+
+    // halaman edit produk
+    public function edit($id)
+    {
+        $product = Product::with('product_variants')->findOrFail($id);
         $categories = Category::all();
 
         return view('admin.edit_produk', compact('product', 'categories'), ['title' => 'Edit Produk', 'active' => 'kelola_produk']);
     }
 
+    // fungsi update produk
     public function update(Request $request, $id)
     {
-        $request->validate([
+        $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string|max:1000',
             'price' => 'required|numeric|min:0',
+            'image' => 'nullable|image|max:2048',
             'category_id' => 'required|exists:categories,id',
-            'image' => 'required|image|max:2048',
-            'product_variants.*.size' => 'required|string|max:50',
-            'product_variants.*.color' => 'required|string|max:50',
+            'product_variants.*.id' => 'nullable|exists:product_variants,id',
+            'product_variants.*.name' => 'required|string|max:50',
             'product_variants.*.stock' => 'required|integer|min:0',
-        ]);
-
+        ]);    
+    
+        // Temukan produk berdasarkan ID
         $product = Product::findOrFail($id);
-
+    
+        // Perbarui data produk
         $product->update([
-            'name' => $request->name,
-            'description' => $request->description,
-            'price' => $request->price,
-            'category_id' => $request->category_id,
-            'image' => $request->image,
+            'name' => $validatedData['name'],
+            'description' => $validatedData['description'],
+            'price' => $validatedData['price'],
+            'category_id' => $validatedData['category_id'],
         ]);
+    
+        // Jika ada gambar baru, hapus gambar lama dan simpan yang baru
+        if ($request->hasFile('image')) {
+            // Hapus gambar lama
+            if ($product->image) {
+                Storage::disk('public')->delete($product->image);
+            }
+            $product->image = $request->file('image')->store('product-images', 'public');
+            $product->save();
+        }
+    
+        // Perbarui atau buat varian produk
+        $existingVariantIds = $product->product_variants->pluck('id')->toArray();
+        $updatedVariantIds = [];
 
-        foreach ($request->product_variants as $variantId => $variantData) {
+        foreach ($validatedData['product_variants'] as $variantData) {
             if (isset($variantData['id'])) {
-                // Update existing variant
+                // Update varian yang sudah ada
                 $variant = ProductVariant::findOrFail($variantData['id']);
                 $variant->update([
-                    'size' => $variantData['size'],
-                    'color' => $variantData['color'],
+                    'name' => $variantData['name'],
                     'stock' => $variantData['stock'],
                 ]);
+                $updatedVariantIds[] = $variant->id;
             } else {
-                // Create new variant
-                $product->variants()->create([
-                    'size' => $variantData['size'],
-                    'color' => $variantData['color'],
+                // Buat varian baru
+                $newVariant = $product->product_variants()->create([
+                    'name' => $variantData['name'],
                     'stock' => $variantData['stock'],
                 ]);
+                $updatedVariantIds[] = $newVariant->id;
             }
         }
+
+        // Hapus varian yang tidak ada lagi
+        $variantsToDelete = array_diff($existingVariantIds, $updatedVariantIds);
+        ProductVariant::destroy($variantsToDelete);
 
         return redirect('/kelola_produk')->with('success', 'Produk berhasil diperbarui.');
     }

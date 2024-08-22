@@ -18,7 +18,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-4">
-                            <img src="../img/thumbnail/laptop.jpg" alt="Gambar Produk" class="img-fluid">
+                            <img src="{{ asset('storage/' . $product->image) }}" alt="Gambar Produk" class="img-fluid">
                         </div>
                         <div class="col-md-8">
                             @if ($errors->any())
@@ -44,7 +44,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="description" class="form-label">Deskripsi Produk</label>
-                                    <textarea name="description" class="form-control" id="description" rows="10" required>{{ old('description', $product->description) }}</textarea>
+                                    <textarea name="description" class="form-control" id="description" rows="5" required>{{ old('description', $product->description) }}</textarea>
                                     @error('description')
                                         <div>{{ $message }}</div>
                                     @enderror
@@ -56,7 +56,6 @@
                                         <div>{{ $message }}</div>
                                     @enderror
                                 </div>
-
                                 <div class="form-group">
                                     <label for="category_id">Kategori</label>
                                     <select name="category_id" id="category_id" class="form-control" required>
@@ -68,25 +67,36 @@
                                         @endforeach
                                     </select>
                                 </div>
-
-                                <!-- Bagian untuk mengelola varian produk -->
                                 <div class="form-group">
-                                    <label>Varian Produk</label>
-                                    <div id="variants-container">
+                                    <label for="image" class="form_label">Ubah Gambar</label>
+                                    <input class="form-control" type="file" id="image" name="image" value="{{ old('image', $product->image) }}">
+                                    @error('image')
+                                        <div>{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <div id="variants">
+                                        <h3>Varian Produk</h3>
                                         @foreach($product->product_variants as $variant)
-                                            <div class="variant-item">
-                                                <input type="hidden" name="variants[{{ $variant->id }}][id]" value="{{ $variant->id }}">
-                                                <div class="form-group">
-                                                    <input type="text" name="variants[{{ $variant->id }}][variant_name]" class="form-control" value="{{ old('variants.' . $variant->id . '.variant_name', $variant->variant_name) }}" required>
+                                            <div class="variant mb-3">
+                                                <input type="hidden" name="product_variants[0][id]" value="{{ $variant->id }}">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control" name="product_variants[0][name]" placeholder="Nama Varian" value="{{ $variant['name'] }}" required>
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="number" class="form-control" name="product_variants[0][stock]" placeholder="Stok" value="{{ $variant['stock'] }}" required>
+                                                    </div>
                                                 </div>
-                                                <button type="button" class="btn btn-danger btn-sm remove-variant">Hapus Varian</button>
                                             </div>
                                         @endforeach
                                     </div>
-                                    <button type="button" class="btn btn-primary btn-sm" id="add-variant">Tambah Varian</button>
+                                    <button type="button" class="btn btn-secondary mb-3" id="add-variant">Tambah Varian</button>
                                 </div>
-
-                                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-success mt-1">Simpan Perubahan</button>
+                                    <a href="/kelola_produk" type="submit" class="btn btn-primary mt-1">Batal</a>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -94,5 +104,35 @@
             </div>
         </div>
     </div>
+
+    <script>
+        let variantCount = {{ count($product->product_variants) }};
+        
+        document.getElementById('add-variant').addEventListener('click', function() {
+            const variantHtml = `
+                <div class="variant mb-3">
+                    <div class="row">
+                        <div class="col">
+                            <input type="text" class="form-control" name="product_variants[${variantCount}][name]" placeholder="Nama Varian" required>
+                        </div>
+                        <div class="col">
+                            <input type="number" class="form-control" name="product_variants[${variantCount}][stock]" placeholder="Stok" required>
+                        </div>
+                        <div class="col-auto">
+                            <button type="button" class="btn btn-danger remove-variant">Hapus</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('variants').insertAdjacentHTML('beforeend', variantHtml);
+            variantCount++;
+        });
+        
+        document.addEventListener('click', function(e) {
+            if (e.target && e.target.classList.contains('remove-variant')) {
+                e.target.closest('.variant').remove();
+            }
+        });
+    </script>
 
 </x-layout_dua>

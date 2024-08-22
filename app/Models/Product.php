@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -16,8 +17,7 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function product_variants()
-    {
-        return $this->hasMany(ProductVariant::class);
+    public function product_variants(): HasMany{
+        return $this->hasMany(ProductVariant::class, 'product_id');
     }
 }
