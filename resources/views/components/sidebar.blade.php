@@ -44,7 +44,7 @@
                 <li class="nav-item">
                     <a data-bs-toggle="collapse" href="#base">
                         <i class="fas fa-layer-group"></i>
-                        <p>Category</p>
+                        <p>Produk Kami</p>
                         <span class="caret"></span>
                     </a>
                     <div class="collapse" id="base">

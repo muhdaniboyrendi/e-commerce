@@ -48,16 +48,35 @@
                             </table>
                             <div class="mt-4">
                                 <a href="/edit_produk/{{ $product['id'] }}" class="btn btn-warning"><i class="far fa-edit"></i> Edit Produk</a>
-                                <form action="/hapus_produk/{{ $product['id'] }}" method="POST" class="d-inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus produk ini?')"><i class="far fa-trash-alt"></i> Hapus Produk</button>
-                                </form>
+                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="far fa-trash-alt"></i> Hapus Produk</button>
                                 <a href="/kelola_produk" class="btn btn-primary"><i class="fas fa-angle-left"></i> Kembali</a>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="deleteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="/hapus_produk/{{ $product['id'] }}" method="POST" class="d-inline">
+                    @csrf
+                    @method('DELETE')
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="deleteModalLabel">Hapus Produk</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Anda yakin ingin menghapus produk ini?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-danger">Hapus</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

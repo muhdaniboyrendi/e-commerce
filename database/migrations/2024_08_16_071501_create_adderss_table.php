@@ -13,15 +13,15 @@ return new class extends Migration
     {
         Schema::create('adderss', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('customer_id')->constrained(
-                table: 'customers',
-                indexName: 'customers_id'
-            );
+            $table->unsignedBigInteger('order_id');
+            $table->foreign('order_id')->references('id')->on('orders');
             $table->string('negara');
             $table->string('kabupaten');
             $table->string('kecamtan');
             $table->string('alamat');
+            $table->string('desa');
             $table->string('kode_pos');
+            $table->string('adderss');
             $table->timestamps();
         });
     }

@@ -56,6 +56,11 @@ class PenjualController extends Controller
     public function destroy($id)
     {
         $product = Product::findOrFail($id);
+
+        if ($product->image) {
+            Storage::disk('public')->delete($product->image);
+        }
+
         $product->product_variants()->delete();
         $product->delete();
 
@@ -66,6 +71,7 @@ class PenjualController extends Controller
     public function show($id)
     {
         $product = Product::with(['category', 'product_variants'])->findOrFail($id);
+        
         return view('admin.info_produk', compact('product'), ['title' => 'Detail Produk', 'active' => 'kelola_produk']);
     }
 

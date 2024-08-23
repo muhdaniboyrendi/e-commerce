@@ -10,66 +10,20 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-xl-3 col-md-4 col-sm-6">
-                    <div class="card">
-                        <a href="">
-                            <img src="/img/thumbnail/laptop.jpg" class="card-img-top">
-                            <div class="card-body">
-                                <span class="card-text">Asus Vivobook OLED 15</span>
-                                <h5 class="card-title">Rp. 9.500.000</h5>
-                                <h6 class="card-subtitle text-body-secondary">10 terjual</h6>
-                            </div>
-                        </a>
+                @foreach ($products as $item)
+                    <div class="col-xl-3 col-md-4 col-sm-6">
+                        <div class="card">
+                            <a href="/detail_produk/{{ $item['id'] }}">
+                                <img src="/img/thumbnail/laptop.jpg" class="card-img-top">
+                                <div class="card-body">
+                                    <h6 class="card-subtitle mb-2 text-body-secondary">{{ $item->name }}</h6>
+                                    <h6 class="card-subtitle mb-2 text-body-secondary"><strong>Rp {{ number_format($item->price, 0, ',', '.') }}</strong></h6>
+                                    <span class="badge text-bg-primary">{{ $item->category->name }}</span>
+                                </div>
+                            </a>
+                        </div>
                     </div>
-                </div>
-                <div class="col-xl-3 col-md-4 col-sm-6">
-                    <div class="card">
-                        <a href="">
-                            <img src="/img/thumbnail/laptop.jpg" class="card-img-top">
-                            <div class="card-body">
-                                <span class="card-text">Asus Vivobook OLED 15</span>
-                                <h5 class="card-title">Rp. 9.500.000</h5>
-                                <h6 class="card-subtitle text-body-secondary">10 terjual</h6>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-md-4 col-sm-6">
-                    <div class="card">
-                        <a href="/detail_produk">
-                            <img src="/img/thumbnail/laptop.jpg" class="card-img-top">
-                            <div class="card-body">
-                                <span class="card-text">Asus Vivobook OLED 15</span>
-                                <h5 class="card-title">Rp. 9.500.000</h5>
-                                <h6 class="card-subtitle text-body-secondary">10 terjual</h6>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-md-4 col-sm-6">
-                    <div class="card">
-                        <a href="">
-                            <img src="/img/thumbnail/laptop.jpg" class="card-img-top">
-                            <div class="card-body">
-                                <span class="card-text">Asus Vivobook OLED 15</span>
-                                <h5 class="card-title">Rp. 9.500.000</h5>
-                                <h6 class="card-subtitle text-body-secondary">10 terjual</h6>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-md-4 col-sm-6">
-                    <div class="card">
-                        <a href="">
-                            <img src="/img/thumbnail/laptop.jpg" class="card-img-top">
-                            <div class="card-body">
-                                <span class="card-text">Asus Vivobook OLED 15</span>
-                                <h5 class="card-title">Rp. 9.500.000</h5>
-                                <h6 class="card-subtitle text-body-secondary">10 terjual</h6>
-                            </div>
-                        </a>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </div>
