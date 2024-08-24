@@ -15,12 +15,11 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('order_id');
             $table->foreign('order_id')->references('id')->on('orders');
-            $table->string('negara');
-            $table->string('kabupaten');
-            $table->string('kecamtan');
-            $table->string('alamat');
-            $table->string('desa');
-            $table->string('kode_pos');
+            $table->string('province');
+            $table->string('city');
+            $table->string('subdistrict');
+            $table->string('village');
+            $table->string('postal_code');
             $table->string('adderss');
             $table->timestamps();
         });

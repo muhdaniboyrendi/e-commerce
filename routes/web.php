@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProdukController;
+use App\Http\Controllers\AddressController;
 use App\Http\Controllers\PenjualController;
 use App\Http\Controllers\DashboardController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
@@ -16,6 +17,15 @@ Route::post('/order/{id}', [ProdukController::class, 'showOrderForm']);
 Route::post('/process-order', [ProdukController::class, 'processOrder']);
 Route::get('/pesanan', [ProdukController::class, 'status']);
 Route::get('/beli', [ProdukController::class, 'create']);
+Route::get('/success', [ProdukController::class, 'success']);
+
+
+// adderss
+Route::get('/provinces', [AddressController::class, 'getProvinces']);
+Route::get('/cities/{provinceId}', [AddressController::class, 'getCities']);
+Route::get('/subdistricts/{cityId}', [AddressController::class, 'getSubdistricts']);
+Route::get('/calculate-shipping/{cityId}/{courier}/{weight}', [AddressController::class, 'calculateShipping']);
+Route::post('/checkout', [AddressController::class, 'storeOrder']);
 
 
 // penjual

@@ -16,10 +16,11 @@ return new class extends Migration
             $table->foreignId('product_id')->constrained()->onDelete('cascade');
             $table->foreignId('variant_id')->constrained('product_variants')->onDelete('cascade');
             $table->integer('quantity');
-            $table->string('customer_name');
-            $table->text('address');
+            $table->string('name');
+            $table->string('no_hp');
+            $table->string('email');
             $table->string('payment_method');
-            $table->string('shipping_service');
+            $table->string('courier');
             $table->decimal('total_price', 10, 2);
             $table->timestamps();
         });

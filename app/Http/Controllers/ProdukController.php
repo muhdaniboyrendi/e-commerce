@@ -87,11 +87,7 @@ class ProdukController extends Controller
         return redirect('/products')->with('success', 'Pesanan berhasil diproses!');
     }
 
-    public function create(){
-        return view('customer.beli', ['title' => 'Beli Sekarang', 'active' => 'pesanan']);
-    }
-
-    public function status(){
-        return view('customer.pesanan', ['title' => 'Pesanan', 'active' => 'pesanan']);
+    public function success(){
+        return view('customer.success', ['title' => 'Pemesanan Sukses', 'active' => 'pesanan']);
     }
 }
