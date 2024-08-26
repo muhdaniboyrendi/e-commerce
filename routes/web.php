@@ -17,7 +17,7 @@ Route::get('/products', [ProdukController::class, 'index']);
 Route::get('/detail_produk/{product:id}', [ProdukController::class, 'show']);
 // pesanan
 Route::post('/order/{id}', [ProdukController::class, 'showOrderForm']);
-Route::post('/process-order', [ProdukController::class, 'processOrder']);
+// Route::post('/process-order', [ProdukController::class, 'processOrder']);
 Route::get('/pesanan', [ProdukController::class, 'status']);
 Route::get('/beli', [ProdukController::class, 'create']);
 Route::get('/success', [ProdukController::class, 'success']);

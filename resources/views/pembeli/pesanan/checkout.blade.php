@@ -96,7 +96,7 @@
                                 </div>
                                 <div class="form-group">
                                     <h4><strong>Total Pembayaran: </strong>Rp <span id="total_payment">{{ number_format($product->price * $quantity, 0, ',', '.') }}</span></h4>
-                                    <input type="hidden" name="total_payment" value="{{ number_format($product->price * $quantity, 0, ',', '.') }}">
+                                    <input type="hidden" name="total_payment" id="total_payment" value="{{ number_format($product->price * $quantity, 0, ',', '.') }}">
                                 </div>
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary mt-2">Buat Pesanan</button>
@@ -153,19 +153,19 @@
             });
 
             // Handle form submission
-            $('form').on('submit', function (e) {
-                e.preventDefault(); // Prevent default form submission
+            // $('form').on('submit', function (e) {
+            //     e.preventDefault(); // Prevent default form submission
 
-                var formData = $(this).serialize(); // Serialize form data
+            //     var formData = $(this).serialize(); // Serialize form data
 
-                $.post('/checkout', formData, function (response) {
-                    // Redirect to success page or display a confirmation message
-                    window.location.href = '/success';
-                }).fail(function (response) {
-                    // Handle error, show a message or highlight invalid fields
-                    alert('Terjadi kesalahan. Silakan coba lagi.');
-                });
-            });
+            //     $.post('/checkout', formData, function (response) {
+            //         // Redirect to success page or display a confirmation message
+            //         window.location.href = '/success';
+            //     }).fail(function (response) {
+            //         // Handle error, show a message or highlight invalid fields
+            //         alert('Terjadi kesalahan. Silakan coba lagi.');
+            //     });
+            // });
         });
     </script>
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Models\ProductVariant;
 use App\Services\RajaOngkirService;
@@ -44,6 +45,7 @@ class AddressController extends Controller
 
     public function storeOrder(Request $request)
     {
+        
         // Validate request data
         $validatedData = $request->validate([
             'product_id' => 'required|integer',
@@ -54,7 +56,7 @@ class AddressController extends Controller
             'email' => 'required|email',
             'payment_method' => 'required|string',
             'courier' => 'required|string',
-            'total_payment' => 'required|string',
+            'total_price' => 'required|string',
             'address.*.province' => 'required|string',
             'address.*.city' => 'required|string',
             'address.*.subdistrict' => 'required|string',
@@ -62,6 +64,9 @@ class AddressController extends Controller
             'address.*.postal_code' => 'required|string',
             'address.*.address' => 'required|string',
         ]);
+        dd($validatedData);
+
+        $totalPayment = $validatedData['total_price'];
 
         // Calculate total payment
         $productPrice = $this->getProductPrice($request->input('product_id'), $request->input('quantity'));
@@ -82,7 +87,7 @@ class AddressController extends Controller
             'email' => $validatedData['email'],
             'payment_method' => $validatedData['payment_method'],
             'courier' => $validatedData['courier'],
-            'total_payment' => $validatedData['total_payment'],
+            'total_payment' => $validatedData['total_price'],
         ]);
 
         foreach ($validatedData['adderss'] as $alamat) {
@@ -97,13 +102,17 @@ class AddressController extends Controller
         }
 
         // Update product variant stock
-        $variant = ProductVariant::findOrFail($validatedData['variant_id']);
-        if ($variant->stock >= $validatedData['quantity']) {
-            $variant->stock -= $validatedData['quantity'];
-            $variant->save();
-        } else {
-            return redirect()->back()->withErrors(['error' => 'Stok tidak mencukupi.']);
+        $product = Product::findOrFail($validatedData['product_id']);
+        $variant = $product->product_variants()->where('id', $validatedData['variant_id'])->first();
+ 
+        // Cek ketersediaan stok
+        if ($variant->stock < $validatedData['quantity']) {
+            return back()->with('error', 'Stok tidak mencukupi untuk varian yang dipilih.');
         }
+ 
+        // Kurangi stok
+        $variant->stock -= $validatedData['quantity'];
+        $variant->save();
 
         // Redirect or return response
         return redirect('/success')->with('total_payment', $totalPayment);
