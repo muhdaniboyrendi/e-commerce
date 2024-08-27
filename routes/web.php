@@ -14,7 +14,7 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 Route::get('/', [HomeController::class, 'index']);
 // produk
 Route::get('/products', [ProdukController::class, 'index']);
-Route::get('/detail_produk/{product:id}', [ProdukController::class, 'show']);
+Route::get('/info_produk/{product:id}', [ProdukController::class, 'show']);
 // pesanan
 Route::post('/order/{id}', [ProdukController::class, 'showOrderForm']);
 // Route::post('/process-order', [ProdukController::class, 'processOrder']);
@@ -37,11 +37,12 @@ Route::get('/profile', [PenjualController::class, 'profile']);
 Route::get('/edit_profile', [PenjualController::class, 'edit']);
 // produk
 Route::get('/kelola_produk', [ProductController::class, 'index']);
-Route::post('/kelola_produk', [PenjualController::class, 'store']);
-Route::delete('/hapus_produk/{product:id}', [PenjualController::class, 'destroy']);
-Route::get('/info_produk/{product:id}', [PenjualController::class, 'show']);
-Route::get('/edit_produk/{product:id}', [PenjualController::class, 'edit']);
-Route::put('/edit_produk/{product:id}', [PenjualController::class, 'update']);
+Route::post('/search', [ProductController::class, 'search']);
+Route::post('/tambah_produk', [ProductController::class, 'store']);
+Route::delete('/hapus_produk/{product:id}', [ProductController::class, 'destroy']);
+Route::get('/detail_produk/{product:id}', [ProductController::class, 'show']);
+Route::get('/edit_produk/{product:id}', [ProductController::class, 'edit']);
+Route::put('/edit_produk/{product:id}', [ProductController::class, 'update']);
 // pesanan
 Route::get('/kelola_pesanan', [PenjualController::class, 'pesanan']);
 

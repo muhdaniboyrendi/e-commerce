@@ -5,9 +5,25 @@
     <div class="container">
         <div class="page-inner">
 
+            <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-0">
+                <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                      <li class="breadcrumb-item"><a href="#">Toko Erlan</a></li>
+                      <li class="breadcrumb-item active" aria-current="page">Kelola Produk</li>
+                    </ol>
+                </nav>
+            </div>
+
             @if (session()->has('success'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert" id="alert-success">
                     {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
+            @if (session()->has('error'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert" id="alert-danger">
+                    {{ session('error') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
@@ -29,11 +45,21 @@
                     </button>
                 </div>
                 <div class="col-md-4">
-                    <input type="text" class="form-control" placeholder="Cari produk...">
+                    <form action="/search" method="post">
+                        @csrf
+                        <div class="input-group">
+                            <input type="text" name="search" placeholder="Search ..." class="form-control" value="{{ isset($filter) ? $filter : '' }}"/>
+                            <div class="input-group-prepend">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fa fa-search search-icon"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
     
-            <table class="table table-striped table-hover">
+            <table class="table table-striped table-hover" id="dataTable">
                 <thead>
                     <tr>
                         <th>No.</th>
@@ -76,6 +102,10 @@
                 </tbody>
             </table>
 
+            <div class="text-center">
+                {{ isset($message) && $message != '' ? $message : '' }}
+            </div>
+            
             <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-center">
                     {{ $products->links() }}
@@ -90,7 +120,7 @@
                             <h5 class="modal-title" id="tambahProdukModalLabel">Tambah Produk Baru</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <form action="/kelola_produk" method="POST" enctype="multipart/form-data">
+                        <form action="/tambah_produk" method="POST" enctype="multipart/form-data">
                             <div class="modal-body">
                                 @csrf
                                 <div class="mb-3">

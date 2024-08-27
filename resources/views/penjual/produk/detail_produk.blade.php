@@ -7,10 +7,10 @@
             <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-2">
                 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                      <li class="breadcrumb-item"><a href="#">Toko Erlan</a></li>
-                      <li class="breadcrumb-item"><a href="#">Produk</a></li>
-                      <li class="breadcrumb-item"><a href="#">Aksesoris</a></li>
-                      <li class="breadcrumb-item active" aria-current="page">Asus Vivobook OLED 15</li>
+                      <li class="breadcrumb-item"><a href="/dashsboard">Toko Erlan</a></li>
+                      <li class="breadcrumb-item"><a href="/kelola_produk">Kelola Produk</a></li>
+                      <li class="breadcrumb-item"><a href="">{{ $product->category->name }}</a></li>
+                      <li class="breadcrumb-item active" aria-current="page">{{ $product->name }}</li>
                     </ol>
                 </nav>
             </div>
