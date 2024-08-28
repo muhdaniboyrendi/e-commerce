@@ -10,23 +10,6 @@ use App\Models\ProductVariant;
 
 class ProdukController extends Controller
 {
-    // Tampilan halaman Produk
-    public function index(){
-        $products = Product::with(['category', 'product_variants'])->paginate(10);
-
-        $product = new Product();
-        $categories = Category::all();
-        $product_variant = new ProductVariant();
-        
-        return view('customer.products', compact('product', 'categories', 'product_variant', 'products'), ['title' => 'Produk', 'active' => 'produk']);
-    }
-
-    // tampilan halaman detail produk
-    public function show($id){
-        $product = Product::with(['category', 'product_variants'])->findOrFail($id);
-
-        return view('customer.detail_produk', compact('product'), ['title' => 'Detail Produk', 'active' => 'produk']);
-    }
 
     // Method untuk menampilkan halaman pemesanan
     public function showOrderForm(Request $request, $id)

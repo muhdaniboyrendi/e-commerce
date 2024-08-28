@@ -13,14 +13,12 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 // pembeli
 Route::get('/', [HomeController::class, 'index']);
 // produk
-Route::get('/products', [ProdukController::class, 'index']);
-Route::get('/info_produk/{product:id}', [ProdukController::class, 'show']);
+Route::get('/products', [ProductController::class, 'produk']);
+Route::get('/info_produk/{product:id}', [ProductController::class, 'info']);
 // pesanan
-Route::post('/order/{id}', [ProdukController::class, 'showOrderForm']);
-// Route::post('/process-order', [ProdukController::class, 'processOrder']);
-Route::get('/pesanan', [ProdukController::class, 'status']);
-Route::get('/beli', [ProdukController::class, 'create']);
-Route::get('/success', [ProdukController::class, 'success']);
+Route::get('/order/{product:id}', [OrderController::class, 'create']);
+Route::post('/order', [OrderController::class, 'store']);
+Route::get('/success', [OrderController::class, 'success']);
 
 
 // adderss

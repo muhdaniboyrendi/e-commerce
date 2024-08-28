@@ -47,7 +47,7 @@
                             <hr class="my-4 py-2">
 
                             <div class="col-md-5">
-                                <form action="/order/{{ $product->id }}" method="POST">
+                                <form action="/order/{{ $product->id }}" method="GET">
                                     @csrf
                                     <div class="row">
                                         <div class="col">

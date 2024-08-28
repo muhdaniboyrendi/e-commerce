@@ -25,6 +25,7 @@ class ProductController extends Controller
         return view('penjual.produk.index', compact('product', 'categories', 'product_variant', 'products'), ['title' => 'Kelola Produk', 'active' => 'kelola_produk']);
     }
     
+    // fungsi tambah produk
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -192,6 +193,21 @@ class ProductController extends Controller
 
     // pembeli
     // tampilan halaman produk
+    public function produk(){
+        $products = Product::with(['category', 'product_variants'])->paginate(10);
 
+        $product = new Product();
+        $categories = Category::all();
+        $product_variant = new ProductVariant();
+        
+        return view('pembeli.produk.products', compact('product', 'categories', 'product_variant', 'products'), ['title' => 'Produk', 'active' => 'produk']);
+    }
+    
     // tampilan halaman info produk
+    public function info($id){
+        $product = Product::with(['category', 'product_variants'])->findOrFail($id);
+        $variant = new ProductVariant();
+        
+        return view('pembeli.produk.info_produk', compact('product', 'variant'), ['title' => 'Info Produk', 'active' => 'produk']);
+    }
 }

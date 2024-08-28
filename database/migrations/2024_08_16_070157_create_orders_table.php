@@ -13,16 +13,19 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->constrained()->onDelete('cascade');
-            $table->foreignId('variant_id')->constrained('product_variants')->onDelete('cascade');
+            $table->unsignedBigInteger('product_id');
+            $table->unsignedBigInteger('variant_id');
             $table->integer('quantity');
             $table->string('name');
-            $table->string('no_hp');
+            $table->string('telp');
             $table->string('email');
-            $table->string('payment_method');
             $table->string('courier');
-            $table->decimal('total_price', 10, 2);
+            $table->string('payment_method');
+            $table->decimal('total_price', 15, 2);
             $table->timestamps();
+
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->foreign('variant_id')->references('id')->on('product_variants')->onDelete('cascade');
         });
     }
 

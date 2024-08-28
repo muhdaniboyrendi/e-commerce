@@ -8,10 +8,8 @@
                 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                     <ol class="breadcrumb">
                       <li class="breadcrumb-item"><a href="#">Toko Erlan</a></li>
-                      <li class="breadcrumb-item"><a href="#">Produk</a></li>
-                      <li class="breadcrumb-item"><a href="#">{{ $product->category->name }}</a></li>
-                      <li class="breadcrumb-item"><a href="#">{{ $product->name }}</a></li>
-                      <li class="breadcrumb-item active" aria-current="page">Checkout</li>
+                      <li class="breadcrumb-item"><a href="#">Pesanan</a></li>
+                      <li class="breadcrumb-item active" aria-current="page">Success</li>
                     </ol>
                 </nav>
             </div>

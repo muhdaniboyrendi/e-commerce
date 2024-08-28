@@ -11,17 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('adderss', function (Blueprint $table) {
+        Schema::create('addresses', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('order_id');
-            $table->foreign('order_id')->references('id')->on('orders');
-            $table->string('province');
-            $table->string('city');
-            $table->string('subdistrict');
-            $table->string('village');
-            $table->string('postal_code');
-            $table->string('adderss');
+            $table->string('provinsi');
+            $table->string('kota');
+            $table->string('kecamatan');
+            $table->string('desa');
+            $table->string('kode_pos');
+            $table->text('alamat');
             $table->timestamps();
+        
+            $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
         });
     }
 
@@ -30,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('adderss');
+        Schema::dropIfExists('addresses');
     }
 };

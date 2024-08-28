@@ -17,8 +17,14 @@
             </div>
             <div class="card">
                 <div class="card-body">
+                    @if (session()->has('error'))
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert" id="alert-danger">
+                            {{ $message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
                     <h2>Pemesanan</h2>
-                    <form action="/checkout" method="POST">
+                    <form action="/order" method="POST">
                         @csrf
                         <input type="hidden" name="product_id" value="{{ $product->id }}">
                         <input type="hidden" name="variant_id" value="{{ $variant->id }}">
@@ -31,51 +37,43 @@
                                     <input type="text" name="name" class="form-control" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="no_hp">Nomor HP:</label>
-                                    <input type="text" name="no_hp" class="form-control" required>
+                                    <label for="telp">Nomor HP:</label>
+                                    <input type="text" name="telp" class="form-control" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="email">Email:</label>
                                     <input type="email" name="email" class="form-control" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="province">Provinsi:</label>
-                                    <select id="province" name="province" class="form-control" required>
+                                    <label for="provinsi">Provinsi:</label>
+                                    <select id="provinsi" name="provinsi" class="form-control" required>
                                         <option value="">Pilih Provinsi</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="city">Kabupaten/Kota:</label>
-                                    <select id="city" name="city" class="form-control" required>
+                                    <label for="kota">Kabupaten/Kota:</label>
+                                    <select id="kota" name="kota" class="form-control" required>
                                         <option value="">Pilih Kabupaten/Kota</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="subdistrict">Kecamatan:</label>
-                                    <input type="text" id="subdistrict" name="subdistrict" class="form-control" required>
+                                    <label for="kecamatan">Kecamatan:</label>
+                                    <input type="text" id="kecamatan" name="kecamatan" class="form-control" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="village">Kelurahan/Desa:</label>
-                                    <input type="text" id="village" name="village" class="form-control" required>
+                                    <label for="desa">Kelurahan/Desa:</label>
+                                    <input type="text" id="desa" name="desa" class="form-control" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="postal_code">Kode POS:</label>
-                                    <input type="text" id="postal_code" name="postal_code" class="form-control" required>
+                                    <label for="kode_pos">Kode POS:</label>
+                                    <input type="text" id="kode_pos" name="kode_pos" class="form-control" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="address">Detail Alamat:</label>
-                                    <textarea name="address" class="form-control" rows="4" placeholder="(No. Rumah, Dusun rt/rw, Nama Jalan, Nama Gedung, dll.)" required></textarea>
+                                    <label for="alamat">Detail Alamat:</label>
+                                    <textarea name="alamat" class="form-control" rows="4" placeholder="(No. Rumah, Dusun rt/rw, Nama Jalan, Nama Gedung, dll.)" required></textarea>
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="payment_method">Metode Pembayaran:</label>
-                                    <select name="payment_method" class="form-control" required>
-                                        <option value="bank_transfer">Transfer Bank</option>
-                                        <option value="credit_card">Kartu Debit</option>
-                                        <option value="cash_on_delivery">Bayar di Tempat (COD)</option>
-                                    </select>
-                                </div>
                                 <div class="form-group">
                                     <label for="courier">Kurir:</label>
                                     <select id="courier" name="courier" class="form-control" required>
@@ -83,6 +81,13 @@
                                         <option value="jnt">J&T</option>
                                         <option value="tiki">TIKI</option>
                                         <option value="pos">POS Indonesia</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="payment_method">Metode Pembayaran:</label>
+                                    <select name="payment_method" class="form-control" required>
+                                        <option value="bank_transfer">Transfer Bank</option>
+                                        <option value="cash_on_delivery">Bayar di Tempat (COD)</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
@@ -96,7 +101,6 @@
                                 </div>
                                 <div class="form-group">
                                     <h4><strong>Total Pembayaran: </strong>Rp <span id="total_payment">{{ number_format($product->price * $quantity, 0, ',', '.') }}</span></h4>
-                                    <input type="hidden" name="total_payment" id="total_payment" value="{{ number_format($product->price * $quantity, 0, ',', '.') }}">
                                 </div>
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary mt-2">Buat Pesanan</button>
@@ -115,28 +119,28 @@
          $(document).ready(function () {
             // Load provinces
             $.get('/provinces', function (data) {
-                $('#province').empty().append('<option value="">Pilih Provinsi</option>');
+                $('#provinsi').empty().append('<option value="">Pilih Provinsi</option>');
                 $.each(data, function (index, province) {
-                    $('#province').append('<option value="' + province.province_id + '">' + province.province + '</option>');
+                    $('#provinsi').append('<option value="' + province.province_id + '">' + province.province + '</option>');
                 });
             });
 
             // Load cities when a province is selected
-            $('#province').on('change', function () {
+            $('#provinsi').on('change', function () {
                 var provinceId = $(this).val();
                 if (provinceId) {
                     $.get('/cities/' + provinceId, function (data) {
-                        $('#city').empty().append('<option value="">Pilih Kabupaten/Kota</option>');
+                        $('#kota').empty().append('<option value="">Pilih Kabupaten/Kota</option>');
                         $.each(data, function (index, city) {
-                            $('#city').append('<option value="' + city.city_id + '">' + city.city_name + '</option>');
+                            $('#kota').append('<option value="' + city.city_id + '">' + city.city_name + '</option>');
                         });
                     });
                 }
             });
 
             // Calculate shipping cost and update total payment
-            $('#courier, #city').on('change', function () {
-                var cityId = $('#city').val();
+            $('#courier, #kota').on('change', function () {
+                var cityId = $('#kota').val();
                 var courier = $('#courier').val();
                 var weight = 1000; // default weight in grams
                 var productPrice = {{ $product->price * $quantity }};
@@ -148,24 +152,10 @@
                         
                         var totalPayment = productPrice + shippingCost;
                         $('#total_payment').text(totalPayment.toLocaleString('id-ID'));
+                        $('#total_payment').val(totalPayment.toLocaleString('id-ID'));
                     });
                 }
             });
-
-            // Handle form submission
-            // $('form').on('submit', function (e) {
-            //     e.preventDefault(); // Prevent default form submission
-
-            //     var formData = $(this).serialize(); // Serialize form data
-
-            //     $.post('/checkout', formData, function (response) {
-            //         // Redirect to success page or display a confirmation message
-            //         window.location.href = '/success';
-            //     }).fail(function (response) {
-            //         // Handle error, show a message or highlight invalid fields
-            //         alert('Terjadi kesalahan. Silakan coba lagi.');
-            //     });
-            // });
         });
     </script>
 
