@@ -101,6 +101,7 @@
                                 </div>
                                 <div class="form-group">
                                     <h4><strong>Total Pembayaran: </strong>Rp <span id="total_payment">{{ number_format($product->price * $quantity, 0, ',', '.') }}</span></h4>
+                                    <input type="hidden" id="totalpayment" name="total_price">
                                 </div>
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary mt-2">Buat Pesanan</button>
@@ -148,11 +149,12 @@
                 if (cityId && courier) {
                     $.get('/calculate-shipping/' + cityId + '/' + courier + '/' + weight, function (data) {
                         var shippingCost = parseInt(data.cost);
+                        console.log(shippingCost);
                         $('#shipping_cost').text(shippingCost.toLocaleString('id-ID'));
                         
                         var totalPayment = productPrice + shippingCost;
                         $('#total_payment').text(totalPayment.toLocaleString('id-ID'));
-                        $('#total_payment').val(totalPayment.toLocaleString('id-ID'));
+                        $('#totalpayment').val(totalPayment);
                     });
                 }
             });

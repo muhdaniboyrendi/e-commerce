@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\AddressController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PenjualController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\DashboardController;
@@ -18,6 +19,8 @@ Route::get('/info_produk/{product:id}', [ProductController::class, 'info']);
 // pesanan
 Route::get('/order/{product:id}', [OrderController::class, 'create']);
 Route::post('/order', [OrderController::class, 'store']);
+Route::get('/payment', [PaymentController::class, 'show']);
+Route::post('/payment/confirm', [PaymentController::class, 'confirm']);
 Route::get('/success', [OrderController::class, 'success']);
 
 
@@ -42,7 +45,8 @@ Route::get('/detail_produk/{product:id}', [ProductController::class, 'show']);
 Route::get('/edit_produk/{product:id}', [ProductController::class, 'edit']);
 Route::put('/edit_produk/{product:id}', [ProductController::class, 'update']);
 // pesanan
-Route::get('/kelola_pesanan', [PenjualController::class, 'pesanan']);
+Route::get('/kelola_pesanan', [OrderController::class, 'index']);
+Route::post('/update_pesanan', [OrderController::class, 'updateStatus']);
 
 
 // auth

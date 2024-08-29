@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('courier');
             $table->string('payment_method');
             $table->decimal('total_price', 15, 2);
+            $table->string('payment_proof')->nullable();
+            $table->string('status')->default('pending');
             $table->timestamps();
 
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');

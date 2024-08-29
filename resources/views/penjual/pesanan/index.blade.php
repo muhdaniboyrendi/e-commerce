@@ -14,6 +14,14 @@
                     </ol>
                 </nav>
             </div>
+
+            @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
             <h1 class="mb-4">Kelola Pesanan</h1>
             
             <div class="row mb-3">
@@ -35,38 +43,58 @@
             <table class="table table-striped table-hover">
                 <thead>
                     <tr>
-                        <th>ID Pesanan</th>
-                        <th>Tanggal</th>
-                        <th>Pelanggan</th>
-                        <th>Total</th>
+                        <th>Nama Pembeli</th>
+                        <th>Produk</th>
+                        <th>Jumlah</th>
+                        <th>Total Harga</th>
                         <th>Status</th>
+                        <th>Bukti Pembayaran</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>#12345</td>
-                        <td>20 Agu 2024</td>
-                        <td>John Doe</td>
-                        <td>Rp 1.500.000</td>
-                        <td><span class="badge bg-warning">Diproses</span></td>
-                        <td>
-                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#detailPesananModal"><i class="bi bi-eye"></i></button>
-                            <button class="btn btn-sm btn-outline-success"><i class="bi bi-check-circle"></i></button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>#12346</td>
-                        <td>19 Agu 2024</td>
-                        <td>Jane Smith</td>
-                        <td>Rp 750.000</td>
-                        <td><span class="badge bg-info">Dikirim</span></td>
-                        <td>
-                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#detailPesananModal"><i class="bi bi-eye"></i></button>
-                            <button class="btn btn-sm btn-outline-success"><i class="bi bi-check-circle"></i></button>
-                        </td>
-                    </tr>
-                    <!-- Tambahkan baris pesanan lainnya di sini -->
+                    @foreach($orders as $order)
+                        <tr>
+                            <td>{{ $order->name }}</td>
+                            <td>{{ $order->product->name ?? 'N/A' }} ({{ $order->variant->name ?? 'N/A' }})</td>
+                            <td>{{ $order->quantity }}</td>
+                            <td>Rp {{ number_format($order->total_price, 0, ',', '.') }}</td>
+                            <td>{{ ucfirst($order->status) }}</td>
+                            <td>
+                                @if($order->payment_proof)
+                                    <a href="{{ Storage::url($order->payment_proof) }}" target="_blank">Lihat Bukti Pembayaran</a>
+                                @else
+                                    Tidak Ada
+                                @endif
+                            </td>
+                            <td>
+                                <div class="btn-group" role="group" aria-label="Basic example">
+                                    <button type="button" class="btn btn-xs btn-info" data-bs-toggle="modal" data-bs-target="#detailPesananModal">
+                                        Detail
+                                    </button>
+                                    <button type="button" class="btn btn-xs btn-primary" data-bs-toggle="modal" data-bs-target="#updateStatus">
+                                        Update
+                                    </button>
+                                </div>
+                                <!-- Form to update order status -->
+                                <form action="/update_pesanan" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="order_id" value="{{ $order->id }}">
+                                    <div class="form-group">
+                                        <select name="status" class="form-control">
+                                            <option value="pending" {{ $order->status == 'pending' ? 'selected' : '' }}>Pending</option>
+                                            <option value="pending_confirmation" {{ $order->status == 'pending_confirmation' ? 'selected' : '' }}>Pending Confirmation</option>
+                                            <option value="confirmed" {{ $order->status == 'confirmed' ? 'selected' : '' }}>Confirmed</option>
+                                            <option value="shipped" {{ $order->status == 'shipped' ? 'selected' : '' }}>Shipped</option>
+                                            <option value="completed" {{ $order->status == 'completed' ? 'selected' : '' }}>Completed</option>
+                                            <option value="cancelled" {{ $order->status == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Update Status</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
     
@@ -85,14 +113,14 @@
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="detailPesananModalLabel">Detail Pesanan #12345</h5>
+                            <h5 class="modal-title" id="detailPesananModalLabel">Detail Pesanan {{ $order->id }}</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <h6>Informasi Pelanggan</h6>
-                            <p>Nama: John Doe<br>
-                            Email: john@example.com<br>
-                            Telepon: 0812-3456-7890</p>
+                            <p>Nama: {{ $order->name }}<br>
+                            Email: {{ $order->email }}<br>
+                            Telepon: {{ $order->telp }}</p>
         
                             <h6>Alamat Pengiriman</h6>
                             <p>Jl. Contoh No. 123, Kota Contoh, 12345</p>
@@ -109,16 +137,10 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>Sepatu Lari</td>
+                                        <td>{{ $order->product->name }}</td>
                                         <td>1</td>
                                         <td>Rp 1.200.000</td>
                                         <td>Rp 1.200.000</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Kaos Olahraga</td>
-                                        <td>2</td>
-                                        <td>Rp 150.000</td>
-                                        <td>Rp 300.000</td>
                                     </tr>
                                 </tbody>
                                 <tfoot>
@@ -144,6 +166,39 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="updateStatus" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="updateStatusLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="updateStatusLabel">Update Status Pesanan</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="/update_pesanan" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <!-- Form to update order status -->
+                        <input type="hidden" name="order_id" value="{{ $order->id }}">
+                        <div class="form-group">
+                            <select name="status" class="form-control">
+                                <option value="pending" {{ $order->status == 'pending' ? 'selected' : '' }}>Pending</option>
+                                <option value="pending_confirmation" {{ $order->status == 'pending_confirmation' ? 'selected' : '' }}>Pending Confirmation</option>
+                                <option value="confirmed" {{ $order->status == 'confirmed' ? 'selected' : '' }}>Confirmed</option>
+                                <option value="shipped" {{ $order->status == 'shipped' ? 'selected' : '' }}>Shipped</option>
+                                <option value="completed" {{ $order->status == 'completed' ? 'selected' : '' }}>Completed</option>
+                                <option value="cancelled" {{ $order->status == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success">Update Status</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

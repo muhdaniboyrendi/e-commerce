@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
+    // pembeli
     // tampilan halamn penesanan
     public function create($productId, Request $request)
     {
@@ -24,8 +25,7 @@ class OrderController extends Controller
     // Method untuk memproses checkout
     public function store(Request $request)
     {
-        // dd($request);
-        $request->validate([
+        $validatedData = $request->validate([
             'product_id' => 'required|exists:products,id',
             'variant_id' => 'required|exists:product_variants,id',
             'quantity' => 'required|integer|min:1',
@@ -40,65 +40,82 @@ class OrderController extends Controller
             'alamat' => 'required|string',
             'courier' => 'required|string',
             'payment_method' => 'required|string',
+            'total_price' => 'required|string',
+        ]);
+        
+        // Mengurangi stok varian produk
+        $variant = productVariant::findOrFail($validatedData['variant_id']);
+        if ($variant->stock < $validatedData['quantity']) {
+            return back()->withErrors(['message' => 'Stok tidak mencukupi']);
+        }
+        $variant->stock -= $validatedData['quantity'];
+        $variant->save();
+
+        // Create an order
+        $order = Order::create([
+            'product_id' => $validatedData['product_id'],
+            'variant_id' => $validatedData['variant_id'],
+            'quantity' => $validatedData['quantity'],
+            'name' => $validatedData['name'],
+            'telp' => $validatedData['telp'],
+            'email' => $validatedData['email'],
+            'courier' => $validatedData['courier'],
+            'payment_method' => $validatedData['payment_method'],
+            'total_price' => $validatedData['total_price'],
         ]);
 
+        // Simpan ID order untuk digunakan dalam redirect
+        $orderId = $order->id;
 
-        DB::transaction(function () use ($request) {
-            // Mengurangi stok varian produk
-            $variant = ProductVariant::findOrFail($request->variant_id);
-            if ($variant->stock < $request->quantity) {
-                return back()->withErrors(['message' => 'Stok tidak mencukupi']);
-            }
-            $variant->stock -= $request->quantity;
-            $variant->save();
+        // Menyimpan data ke tabel addresses
+        Address::create([
+            'order_id' => $order->id,
+            'provinsi' => $validatedData['provinsi'],
+            'kota' => $validatedData['kota'],
+            'kecamatan' => $validatedData['kecamatan'],
+            'desa' => $validatedData['desa'],
+            'kode_pos' => $validatedData['kode_pos'],
+            'alamat' => $validatedData['alamat'],
+        ]);
 
-            // Menghitung total harga
-            $totalPrice = $variant->product->price * $request->quantity;
-
-            // Menyimpan data ke tabel orders
-            $order = Order::create([
-                'product_id' => $request->product_id,
-                'variant_id' => $request->variant_id,
-                'quantity' => $request->quantity,
-                'name' => $request->name,
-                'telp' => $request->telp,
-                'email' => $request->email,
-                'courier' => $request->courier,
-                'payment_method' => $request->payment_method,
-                'total_price' => $totalPrice,
-            ]);
-
-            // Simpan ID order untuk digunakan dalam redirect
-            $orderId = $order->id;
-
-            // Menyimpan data ke tabel addresses
-            Address::create([
-                'order_id' => $order->id,
-                'provinsi' => $request->provinsi,
-                'kota' => $request->kota,
-                'kecamatan' => $request->kecamatan,
-                'desa' => $request->desa,
-                'kode_pos' => $request->kode_pos,
-                'alamat' => $request->alamat,
-            ]);
-        });
-
-        // Cek metode pembayaran dan arahkan ke halaman yang sesuai
-        if ($request->payment_method === 'bank_transfer') {
-            return redirect()->route('order.payment', ['order_id' => $orderId, 'total_price' => $totalPrice]);
+        // Redirect based on payment method
+        if ($validatedData['payment_method'] == 'bank_transfer') {
+            return redirect('/payment')->with(['order_id' => $orderId, 'total_price' => $validatedData['total_price']]);
         }
-        
-        return redirect('/success')->with('success', 'Pesanan Anda berhasil dibuat!');
-    }
 
-    // tampilan halaman pembayaran
-    public function payment($order_id, $total_price)
-    {
-        return view('order.payment', compact('order_id', 'total_price'));
+        return redirect('/success')->with('total_price', $validatedData['total_price']);
     }
 
     // tampilan pesanan sukses
     public function success(){
         return view('pembeli.pesanan.success', ['title' => 'Pemesanan Sukses', 'active' => 'pesanan']);
+    }
+
+
+    // penjual
+    // tampilan halaman kelola pesanan
+    public function index()
+    {
+        // Fetch all orders (paginate if necessary)
+        $orders = Order::with('product', 'variant', 'address')->orderBy('created_at', 'desc')->get();
+
+        return view('penjual.pesanan.index', compact('orders'), ['title' => 'Pesanan', 'active' => 'kelola_pesanan']);
+    }
+
+    // Update the status of an order
+    public function updateStatus(Request $request)
+    {
+        // Validate the request data
+        $validatedData = $request->validate([
+            'order_id' => 'required|exists:orders,id',
+            'status' => 'required|string',
+        ]);
+
+        // Find the order and update its status
+        $order = Order::findOrFail($validatedData['order_id']);
+        $order->status = $validatedData['status'];
+        $order->save();
+
+        return back()->with('success', 'Status pesanan berhasil diperbarui.');
     }
 }
