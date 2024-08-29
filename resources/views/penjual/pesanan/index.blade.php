@@ -123,7 +123,7 @@
                             Telepon: {{ $order->telp }}</p>
         
                             <h6>Alamat Pengiriman</h6>
-                            <p>Jl. Contoh No. 123, Kota Contoh, 12345</p>
+                            <p>{{ $order->address->desa }}, {{ $order->address->kecamatan }}, {{ $order->address->kota }}, {{ $order->address->provinsi }}, {{ $order->address->kode_pos }}, {{ $order->address->alamat }}</p>
         
                             <h6>Detail Produk</h6>
                             <table class="table table-sm">
@@ -138,15 +138,15 @@
                                 <tbody>
                                     <tr>
                                         <td>{{ $order->product->name }}</td>
-                                        <td>1</td>
-                                        <td>Rp 1.200.000</td>
-                                        <td>Rp 1.200.000</td>
+                                        <td>{{ $order->quantity }}</td>
+                                        <td>{{ $order->product->price }}</td>
+                                        <td>{{ $order->total_price }}</td>
                                     </tr>
                                 </tbody>
                                 <tfoot>
                                     <tr>
                                         <th colspan="3">Total</th>
-                                        <th>Rp 1.500.000</th>
+                                        <th>{{ $order->total_price }}</th>
                                     </tr>
                                 </tfoot>
                             </table>
