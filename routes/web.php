@@ -46,6 +46,7 @@ Route::get('/edit_produk/{product:id}', [ProductController::class, 'edit']);
 Route::put('/edit_produk/{product:id}', [ProductController::class, 'update']);
 // pesanan
 Route::get('/kelola_pesanan', [OrderController::class, 'index']);
+Route::get('/orders/{id}', [OrderController::class, 'show']);
 Route::post('/update_pesanan', [OrderController::class, 'updateStatus']);
 
 

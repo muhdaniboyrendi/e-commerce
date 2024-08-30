@@ -8,6 +8,8 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Models\ProductVariant;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
+use App\Services\RajaOngkirService;
 
 class OrderController extends Controller
 {
@@ -100,6 +102,58 @@ class OrderController extends Controller
         $orders = Order::with('product', 'variant', 'address')->orderBy('created_at', 'desc')->get();
 
         return view('penjual.pesanan.index', compact('orders'), ['title' => 'Pesanan', 'active' => 'kelola_pesanan']);
+    }
+
+    protected $rajaOngkirService;
+
+    public function __construct(RajaOngkirService $rajaOngkirService)
+    {
+        $this->rajaOngkirService = $rajaOngkirService;
+    }
+
+    // tampilan detail pesanan
+    public function show($id)
+    {
+        $order = Order::with(['product', 'variant', 'address'])->find($id);
+
+        $provinces = $this->rajaOngkirService->getProvinces($order->address->provinsi);
+
+        // $apiKey = '1a35ccbdb2d7db90a98ec0d929e8d866';
+        // $provinceId = $order->address->provinsi;
+        // $cityId = $order->address->kota;
+
+        // $response = Http::withHeaders([
+        //     'key' => $apiKey
+        // ])->get("https://api.rajaongkir.com/starter/province", [
+        //     'id' => $provinceId
+        // ]);
+
+        $provinceName = response()->json($provinces['rajaongkir']['results']['province']);
+
+        if ($order) {
+            return response()->json([
+                'name' => $order->name,
+                'telp' => $order->telp,
+                'email' => $order->email,
+                'provinsi' => $provinceName,
+                'kota' => $provinceName,
+                'kecamatan' => $order->address->kecamatan,
+                'desa' => $order->address->desa,
+                'kode_pos' => $order->address->kode_pos,
+                'alamat' => $order->address->alamat,
+                'product_name' => $order->product->name ?? 'N/A',
+                'variant' => $order->variant->name ?? 'N/A',
+                'total_price' => number_format($order->total_price, 0, ',', '.'),
+                'status' => ucfirst($order->status),
+                'payment_proof' => $order->payment_proof,
+                'quantity' => $order->quantity,
+                'courier' => $order->courier,
+                'payment_method' => $order->payment_method,
+                'price' => $order->product->price,
+            ]);
+        }
+
+        return response()->json(['message' => 'Pesanan tidak ditemukan.'], 404);
     }
 
     // Update the status of an order
