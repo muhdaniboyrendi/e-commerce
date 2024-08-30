@@ -35,13 +35,23 @@ class RajaOngkirService
         return $response->json();
     }
 
-    public function getSubdistricts($cityId)
+    public function getProvince($provinceId)
     {
-        // Note: This functionality may require higher tier subscription
         $response = Http::withHeaders([
             'key' => $this->apiKey
-        ])->get("{$this->baseUrl}/subdistrict", [
-            'city' => $cityId
+        ])->get("{$this->baseUrl}/province", [
+            'id' => $provinceId
+        ]);
+
+        return $response->json();
+    }
+
+    public function getCity($cityId)
+    {
+        $response = Http::withHeaders([
+            'key' => $this->apiKey
+        ])->get("{$this->baseUrl}/city", [
+            'id' => $cityId
         ]);
 
         return $response->json();

@@ -81,7 +81,7 @@
         
             <!-- Modal Detail Pesanan -->
             <div class="modal fade" id="detailPesananModal" tabindex="-1" aria-labelledby="detailPesananModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-md">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h4 class="modal-title" id="detailPesananModalLabel"><strong>Detail Pesanan</strong></h4>
@@ -91,16 +91,13 @@
                             @csrf
                             <div class="modal-body">
 
-                                <h5><strong>Informasi Pelanggan</strong></h5>
-
                                 <div id="orderDetails">
-                                    <input type="hidden" name="order_id" id="order_id">
                                     <!-- Detail Pesanan akan dimuat di sini melalui AJAX -->
                                 </div>
-            
-                                {{-- @if($order->payment_proof)
-                                    <a href="{{ Storage::url($order->payment_proof) }}" target="_blank">Lihat Bukti Pembayaran</a>
-                                @endif --}}
+
+                                <div id="buktiPembayaran">
+
+                                </div>
 
                             </div>
                         </form>
@@ -125,125 +122,139 @@
                     success: function(response) {
                         // Mengisi modal dengan data pesanan yang diterima dari server
                         $('#orderDetails').html(`
-                            <div class="row">
-                                <div class="col-md-2">
-                                    Nama
+                        <div class="row">
+                            <div class="col">
+                                <h5><strong>Informasi Pelanggan</strong></h5>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        Nama
+                                    </div>
+                                    <div class="col-md-10">
+                                        : ${response.name}
+                                    </div>
                                 </div>
-                                <div class="col-md-10">
-                                    : ${response.name}
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        Telepon
+                                    </div>
+                                    <div class="col-md-10">
+                                        : ${response.telp}
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-2">
-                                    Telepon
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        Email
+                                    </div>
+                                    <div class="col-md-10">
+                                        : ${response.email}
+                                    </div>
                                 </div>
-                                <div class="col-md-10">
-                                    : ${response.telp}
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        Alamat
+                                    </div>
+                                    <div class="col-md-10">
+                                        : ${response.desa}, ${response.kecamatan}, ${response.kota}, ${response.provinsi}, ${response.kode_pos}, ${response.alamat}
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-2">
-                                    Email
+                                <h5 class="mt-3"><strong>Informasi Produk</strong></h5>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        Nama
+                                    </div>
+                                    <div class="col-md-10">
+                                        : ${response.product_name}
+                                    </div>
                                 </div>
-                                <div class="col-md-10">
-                                    : ${response.email}
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        Varian
+                                    </div>
+                                    <div class="col-md-10">
+                                        : ${response.variant}
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-2">
-                                    Alamat
-                                </div>
-                                <div class="col-md-10">
-                                    : ${response.desa}, ${response.kecamatan}, ${response.kota}, ${response.provinsi}, ${response.kode_pos}, ${response.alamat}
-                                </div>
-                            </div>
-                            <h5 class="mt-3"><strong>Informasi Produk</strong></h5>
-                            <div class="row">
-                                <div class="col-md-2">
-                                    Nama
-                                </div>
-                                <div class="col-md-10">
-                                    : ${response.product_name}
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-2">
-                                    Varian
-                                </div>
-                                <div class="col-md-10">
-                                    : ${response.variant}
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-2">
-                                    Harga
-                                </div>
-                                <div class="col-md-10">
-                                    : ${response.price}
-                                </div>
-                            </div>
-                            <h5 class="mt-3"><strong>Informasi Pesanan</strong></h5>
-                            <div class="row">
-                                <div class="col-md-2">
-                                    Jumlah
-                                </div>
-                                <div class="col-md-10">
-                                    : ${response.quantity}
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-2">
-                                    Kurir
-                                </div>
-                                <div class="col-md-10">
-                                    : ${response.courier}
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-2">
-                                    Pembayaran
-                                </div>
-                                <div class="col-md-10">
-                                    : ${response.payment_method}
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-2">
-                                    Subtotal
-                                </div>
-                                <div class="col-md-10">
-                                    : ${response.total_price}
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-2">
-                                    Status
-                                </div>
-                                <div class="col-md-10">
-                                    : ${response.status}
-                                </div>
-                            </div>
-                            <a href="">Lihat bukti pembayaran</a>
-                            <h6 class="mt-3"><strong>Perbarui Status</strong></h6>
-                            <div class="row">
-                                <div class="col">
-                                    <div class="input-group mb-3">
-                                        <select class="form-select" name="status" id="orderStatus">
-                                            <option value="pending">Pending</option>
-                                            <option value="processing">Processing</option>
-                                            <option value="completed">Completed</option>
-                                            <option value="cancelled">Cancelled</option>
-                                        </select>
-                                        <button type="submit" class="btn btn-primary" id="button-addon2">Simpan Perubahan</button>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        Harga
+                                    </div>
+                                    <div class="col-md-10">
+                                        : Rp ${response.price}
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="col">
+                                <h5 class="pt-0"><strong>Informasi Pesanan</strong></h5>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        Jumlah
+                                    </div>
+                                    <div class="col-md-9">
+                                        : ${response.quantity}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        Kurir
+                                    </div>
+                                    <div class="col-md-9">
+                                        : ${response.courier}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        Pembayaran
+                                    </div>
+                                    <div class="col-md-9">
+                                        : ${response.payment_method}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        Subtotal
+                                    </div>
+                                    <div class="col-md-9">
+                                        : Rp ${response.total_price}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        Status
+                                    </div>
+                                    <div class="col-md-9">
+                                        : ${response.status}
+                                    </div>
+                                </div>
+                                <a href="" id="lihatBuktiPembayaran">Lihat bukti pembayaran</a>
+                                <h6 class="mt-3"><strong>Perbarui Status</strong></h6>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="input-group mb-3">
+                                            <select class="form-select" name="status" id="orderStatus">
+                                                <option value="pending">Pending</option>
+                                                <option value="processing">Processing</option>
+                                                <option value="completed">Completed</option>
+                                                <option value="cancelled">Cancelled</option>
+                                            </select>
+                                            <button type="submit" class="btn btn-primary" id="button-addon2">Simpan</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>    
+                        </div>
                         `);
                     },
                     error: function() {
                         alert('Gagal memuat detail pesanan.');
                     }
                 });
+            });
+
+            $('#lihatBuktiPembayaran').on('click', function(){
+                $('#buktiPembayaran').html(`
+                    <img src="{{ asset('storage/' . $product->image) }}" alt="Gambar Produk" class="img-fluid">
+                `);
             });
         });
     </script>

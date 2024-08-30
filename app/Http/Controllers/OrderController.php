@@ -116,19 +116,12 @@ class OrderController extends Controller
     {
         $order = Order::with(['product', 'variant', 'address'])->find($id);
 
-        $provinces = $this->rajaOngkirService->getProvinces($order->address->provinsi);
+        // Mengambil nama provinsi dan kota dari API Raja Ongkir
+        $provinceResponse = $this->rajaOngkirService->getProvince($order->address->provinsi);
+        $cityResponse = $this->rajaOngkirService->getCity($order->address->kota);
 
-        // $apiKey = '1a35ccbdb2d7db90a98ec0d929e8d866';
-        // $provinceId = $order->address->provinsi;
-        // $cityId = $order->address->kota;
-
-        // $response = Http::withHeaders([
-        //     'key' => $apiKey
-        // ])->get("https://api.rajaongkir.com/starter/province", [
-        //     'id' => $provinceId
-        // ]);
-
-        $provinceName = response()->json($provinces['rajaongkir']['results']['province']);
+        $provinceName = $provinceResponse['rajaongkir']['results']['province'] ?? 'Unknown Province';
+        $cityName = $cityResponse['rajaongkir']['results']['city_name'] ?? 'Unknown City';
 
         if ($order) {
             return response()->json([
@@ -136,7 +129,7 @@ class OrderController extends Controller
                 'telp' => $order->telp,
                 'email' => $order->email,
                 'provinsi' => $provinceName,
-                'kota' => $provinceName,
+                'kota' => $cityName,
                 'kecamatan' => $order->address->kecamatan,
                 'desa' => $order->address->desa,
                 'kode_pos' => $order->address->kode_pos,

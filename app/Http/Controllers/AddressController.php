@@ -25,12 +25,6 @@ class AddressController extends Controller
         return response()->json($cities['rajaongkir']['results']);
     }
 
-    public function getSubdistricts($cityId)
-    {
-        $subdistricts = $this->rajaOngkirService->getSubdistricts($cityId);
-        return response()->json($subdistricts['rajaongkir']['results']);
-    }
-
     public function calculateShipping($cityId, $courier, $weight)
     {
         $shippingCost = $this->rajaOngkirService->calculateShipping($cityId, $courier, $weight);
