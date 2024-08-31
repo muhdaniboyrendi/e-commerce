@@ -120,6 +120,14 @@
                     url: '/orders/' + orderId,
                     method: 'GET',
                     success: function(response) {
+                        const paymentProof =
+                            `<div class="row">
+                                <div class="col">
+                                    <h5 class="mt-3"><strong>Bukti Pembayaran</strong></h5>
+                                    <img src="{{ asset('storage/${response.payment_proof}') }}" class="card-img-top">
+                                </div>    
+                            </div> `;
+
                         // Mengisi modal dengan data pesanan yang diterima dari server
                         $('#orderDetails').html(`
                         <div class="row">
@@ -226,16 +234,14 @@
                                         : ${response.status}
                                     </div>
                                 </div>
-                                <a href="" id="lihatBuktiPembayaran">Lihat bukti pembayaran</a>
                                 <h6 class="mt-3"><strong>Perbarui Status</strong></h6>
                                 <div class="row">
                                     <div class="col">
                                         <div class="input-group mb-3">
                                             <select class="form-select" name="status" id="orderStatus">
-                                                <option value="pending">Pending</option>
-                                                <option value="processing">Processing</option>
-                                                <option value="completed">Completed</option>
-                                                <option value="cancelled">Cancelled</option>
+                                                @foreach($statuses as $status)
+                                                    <option value="{{ $status->id }}" {{  }}>{{ $status->name }}</option>
+                                                @endforeach
                                             </select>
                                             <button type="submit" class="btn btn-primary" id="button-addon2">Simpan</button>
                                         </div>
@@ -243,18 +249,14 @@
                                 </div>
                             </div>    
                         </div>
+                        ${response.payment_method == 'bank_transfer' ? paymentProof : ''}
                         `);
                     },
                     error: function() {
                         alert('Gagal memuat detail pesanan.');
                     }
                 });
-            });
-
-            $('#lihatBuktiPembayaran').on('click', function(){
-                $('#buktiPembayaran').html(`
-                    <img src="{{ asset('storage/' . $product->image) }}" alt="Gambar Produk" class="img-fluid">
-                `);
+                
             });
         });
     </script>

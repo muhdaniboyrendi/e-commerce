@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('variant_id');
+            $table->unsignedBigInteger('status_id');
             $table->integer('quantity');
             $table->string('name');
             $table->string('telp');
@@ -23,11 +24,11 @@ return new class extends Migration
             $table->string('payment_method');
             $table->decimal('total_price', 15, 2);
             $table->string('payment_proof')->nullable();
-            $table->string('status')->default('pending');
             $table->timestamps();
 
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->foreign('variant_id')->references('id')->on('product_variants')->onDelete('cascade');
+            $table->foreign('status_id')->references('id')->on('statuses')->onDelete('cascade');
         });
     }
 

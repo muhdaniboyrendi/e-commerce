@@ -22,8 +22,13 @@ class Order extends Model
     {
         return $this->belongsTo(ProductVariant::class);
     }
-
+    
     public function address(): HasOne{
         return $this->hasOne(Address::class, 'order_id');
+    }
+
+    public function status()
+    {
+        return $this->belongsTo(Status::class);
     }
 }

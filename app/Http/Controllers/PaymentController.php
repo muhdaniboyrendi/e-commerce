@@ -19,7 +19,7 @@ class PaymentController extends Controller
         return view('pembeli.pesanan.payment', compact('order', 'totalPrice'), ['title' => 'Payment', 'active' => 'pesanan']);
     }
 
-    // fungsi untuk kondirmasi pembayaran
+    // fungsi untuk konfirmasi pembayaran
     public function confirm(Request $request)
     {
         $validatedData = $request->validate([
@@ -33,12 +33,11 @@ class PaymentController extends Controller
             return back()->withErrors(['message' => 'Order tidak ditemukan.']);
         }
 
-        $path = $request->file('payment_proof')->store('public/payment_proofs');
+        $path = $request->file('payment_proof')->store('payment_proofs', 'public'); 
 
         // Update the order with payment proof and change the status
         $order->update([
             'payment_proof' => $path,
-            'status' => 'pending_confirmation', // Assuming you have a status field
         ]);
 
         return redirect('/success')->with('success', 'Bukti pembayaran berhasil diunggah.');

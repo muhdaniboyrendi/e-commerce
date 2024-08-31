@@ -24,7 +24,7 @@
                     <p>Pesanan anda akan segera kami proses, silahkan tunggu!</p>
 
                     @if (session()->has('total_price'))
-                        <p>Siapkan uang anda ketika menerima pesanan anda, yaitu sebesar <strong>Rp {{ number_format($total_price, 0, ',', '.') }}</strong></p>
+                        <p>Siapkan uang anda ketika menerima pesanan anda, yaitu sebesar <strong>Rp {{ number_format(session('total_price'), 0, ',', '.') }}</strong></p>
                     @endif
                         
                     <a href="/">Kembali ke Beranda</a>

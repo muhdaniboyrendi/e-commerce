@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\Status;
 use App\Models\Address;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Models\ProductVariant;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Http;
 use App\Services\RajaOngkirService;
+use Illuminate\Support\Facades\Http;
 
 class OrderController extends Controller
 {
@@ -57,6 +58,7 @@ class OrderController extends Controller
         $order = Order::create([
             'product_id' => $validatedData['product_id'],
             'variant_id' => $validatedData['variant_id'],
+            'status_id' => 1,
             'quantity' => $validatedData['quantity'],
             'name' => $validatedData['name'],
             'telp' => $validatedData['telp'],
@@ -99,9 +101,10 @@ class OrderController extends Controller
     public function index()
     {
         // Fetch all orders (paginate if necessary)
-        $orders = Order::with('product', 'variant', 'address')->orderBy('created_at', 'desc')->get();
+        $orders = Order::with('product', 'variant', 'address', 'status')->orderBy('created_at', 'desc')->get();
+        $statuses = Status::all();
 
-        return view('penjual.pesanan.index', compact('orders'), ['title' => 'Pesanan', 'active' => 'kelola_pesanan']);
+        return view('penjual.pesanan.index', compact('orders', 'statuses'), ['title' => 'Pesanan', 'active' => 'kelola_pesanan']);
     }
 
     protected $rajaOngkirService;
@@ -114,7 +117,7 @@ class OrderController extends Controller
     // tampilan detail pesanan
     public function show($id)
     {
-        $order = Order::with(['product', 'variant', 'address'])->find($id);
+        $order = Order::with(['product', 'variant', 'address', 'status'])->find($id);
 
         // Mengambil nama provinsi dan kota dari API Raja Ongkir
         $provinceResponse = $this->rajaOngkirService->getProvince($order->address->provinsi);
@@ -137,7 +140,7 @@ class OrderController extends Controller
                 'product_name' => $order->product->name ?? 'N/A',
                 'variant' => $order->variant->name ?? 'N/A',
                 'total_price' => number_format($order->total_price, 0, ',', '.'),
-                'status' => ucfirst($order->status),
+                'status' => $order->status->name,
                 'payment_proof' => $order->payment_proof,
                 'quantity' => $order->quantity,
                 'courier' => $order->courier,
