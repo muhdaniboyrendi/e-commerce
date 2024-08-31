@@ -128,6 +128,7 @@ class OrderController extends Controller
 
         if ($order) {
             return response()->json([
+                'id' => $order->id,
                 'name' => $order->name,
                 'telp' => $order->telp,
                 'email' => $order->email,
@@ -152,6 +153,26 @@ class OrderController extends Controller
         return response()->json(['message' => 'Pesanan tidak ditemukan.'], 404);
     }
 
+    // fungsi pencarian
+    public function search(Request $request){
+        dd($request);
+        $search = $request->input('query');
+
+        $orders = Order::with('product', 'status')
+            ->when($search, function ($query, $search) {
+                return $query->where('name', 'like', '%' . $search . '%')->orWhere('total_price', 'like', '%' . $search . '%')
+                            ->orWhereHas('product', function ($query) use ($search) {
+                                $query->where('name', 'like', '%' . $search . '%');
+                            })
+                            ->orWhereHas('status', function ($query) use ($search) {
+                                $query->where('name', 'like', '%' . $search . '%');
+                            });
+            })
+            ->paginate(10);;
+
+        return response()->json($orders);
+    }
+
     // Update the status of an order
     public function updateStatus(Request $request)
     {
@@ -161,10 +182,13 @@ class OrderController extends Controller
             'status' => 'required|string',
         ]);
 
+
         // Find the order and update its status
         $order = Order::findOrFail($validatedData['order_id']);
-        $order->status = $validatedData['status'];
-        $order->save();
+
+        $order->update([
+            'status_id' => $validatedData['status'],
+        ]);
 
         return back()->with('success', 'Status pesanan berhasil diperbarui.');
     }

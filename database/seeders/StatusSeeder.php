@@ -14,7 +14,7 @@ class StatusSeeder extends Seeder
     public function run(): void
     {
         Status::create([
-            'name' => 'Menunggu Kenfirmasi',
+            'name' => 'Menunggu Konfirmasi',
             'color' => 'warning',
         ]);
         Status::create([

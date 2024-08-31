@@ -25,18 +25,18 @@
             <h1 class="mb-4">Kelola Pesanan</h1>
             
             <div class="row mb-3">
-                <div class="col-md-4">
-                    <input type="text" class="form-control" placeholder="Cari pesanan...">
-                </div>
-                <div class="col-md-4">
-                    <select class="form-select">
-                        <option selected>Filter Status</option>
-                        <option value="1">Menunggu Pembayaran</option>
-                        <option value="2">Diproses</option>
-                        <option value="3">Dikirim</option>
-                        <option value="4">Selesai</option>
-                        <option value="5">Dibatalkan</option>
-                    </select>
+                <div class="input-group">
+                    <div class="col-md-4">
+                        <input type="text" id="searchBar" class="form-control" name="search" placeholder="Cari pesanan...">
+                    </div>
+                    <div class="col-md-3">
+                        <select id="searchSelect" class="form-control" name="search">
+                            <option selected>Filter Status</option>
+                            @foreach ($statuses as $status)
+                                <option value="{{ $status['id'] }}">{{ $status['name'] }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
             </div>
     
@@ -50,13 +50,13 @@
                         <th>Aksi</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="dataOrder">
                     @foreach($orders as $order)
                         <tr>
                             <td>{{ $order->name }}</td>
                             <td>{{ $order->product->name ?? 'N/A' }} ({{ $order->variant->name ?? 'N/A' }})</td>
                             <td>Rp {{ number_format($order->total_price, 0, ',', '.') }}</td>
-                            <td>{{ ucfirst($order->status) }}</td>
+                            <td><span class="badge text-bg-{{ $order->status->color }}">{{ $order->status->name }}</span></td>
                             <td>
                                 <div class="btn-group" role="group" aria-label="Basic example">
                                     <a href="#" class="btn btn-xs btn-info" data-order-id="{{ $order->id }}" data-bs-toggle="modal" data-bs-target="#detailPesananModal">
@@ -95,10 +95,6 @@
                                     <!-- Detail Pesanan akan dimuat di sini melalui AJAX -->
                                 </div>
 
-                                <div id="buktiPembayaran">
-
-                                </div>
-
                             </div>
                         </form>
                     </div>
@@ -113,7 +109,6 @@
         $(document).ready(function() {
             $('.btn-info').on('click', function() {
                 var orderId = $(this).data('order-id'); // Mendapatkan ID pesanan dari tombol
-                $('#order_id').val(orderId); // Mengisi input hidden di form dengan ID pesanan
 
                 // Melakukan AJAX request untuk mendapatkan detail pesanan
                 $.ajax({
@@ -231,16 +226,18 @@
                                         Status
                                     </div>
                                     <div class="col-md-9">
-                                        : ${response.status}
+                                        : <strong>${response.status}</strong>
                                     </div>
                                 </div>
                                 <h6 class="mt-3"><strong>Perbarui Status</strong></h6>
                                 <div class="row">
                                     <div class="col">
                                         <div class="input-group mb-3">
+                                            <input type="hidden" name="order_id" id="order_id" value="${response.id}">
                                             <select class="form-select" name="status" id="orderStatus">
+                                                <option>Status</option>
                                                 @foreach($statuses as $status)
-                                                    <option value="{{ $status->id }}" {{  }}>{{ $status->name }}</option>
+                                                    <option value="{{ $status->id }}">{{ $status->name }}</option>
                                                 @endforeach
                                             </select>
                                             <button type="submit" class="btn btn-primary" id="button-addon2">Simpan</button>
@@ -257,6 +254,25 @@
                     }
                 });
                 
+            });
+
+            $('#searchBar').on('keyup', function(){
+                var query = $(this).val();
+                $.ajax({
+                    url: '/search_order',
+                    method: 'GET',
+                    data: {query: query},
+                    success: function(data) {
+                        $.each(data, function(index, item) {
+                            $('#dataOrder').html(`
+                                <td>${item.name}</td>
+                            `);
+                        });
+                    },
+                    error: function(){
+                        alert('gagal');
+                    }
+                });
             });
         });
     </script>
