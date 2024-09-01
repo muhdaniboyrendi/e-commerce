@@ -107,10 +107,68 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
+            // fungsi search
+            function fetchOrders(query = '', status = '') {
+                $.ajax({
+                    url: "/search_order",
+                    method: 'GET',
+                    data: {
+                        query: query,
+                        status: status
+                    },
+                    success: function(response) {
+                        // Clear the existing content
+                        $('#dataOrder').empty();
+                        
+                        // Loop through each order in the response data
+                        response.orders.forEach(function(order) {
+                            let product = order.product ? order.product.name : 'N/A';
+                            let variant = order.variant ? order.variant.name : 'N/A';
+                            let totalPrice = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(order.total_price);
+                            let statusBadge = `<span class="badge text-bg-${order.status.color}">${order.status.name}</span>`;
+    
+                            // Append the new row to the table body
+                            $('#dataOrder').append(`
+                                <tr>
+                                    <td>${order.name}</td>
+                                    <td>${product} (${variant})</td>
+                                    <td>${totalPrice}</td>
+                                    <td>${statusBadge}</td>
+                                    <td>
+                                        <div class="btn-group" role="group" aria-label="Basic example">
+                                            <a href="#" class="btn btn-xs btn-info" data-order-id="${order.id}" data-bs-toggle="modal" data-bs-target="#detailPesananModal">
+                                                Detail
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            `);
+                        });
+                    },
+                    error: function(xhr) {
+                        console.log('Error:', xhr.responseText);
+                    }
+                });
+            }
+    
+            $('#searchBar').on('keyup', function() {
+                var query = $(this).val();
+                var status = $('#searchSelect').val();
+                fetchOrders(query, status);
+            });
+    
+            $('#searchSelect').on('change', function() {
+                var query = $('#searchBar').val();
+                var status = $(this).val();
+                fetchOrders(query, status);
+            });
+
+
+            // fungsi view detail pesanan
             $('.btn-info').on('click', function() {
                 var orderId = $(this).data('order-id'); // Mendapatkan ID pesanan dari tombol
+                console.log('hallo');
 
-                // Melakukan AJAX request untuk mendapatkan detail pesanan
                 $.ajax({
                     url: '/orders/' + orderId,
                     method: 'GET',
@@ -123,7 +181,6 @@
                                 </div>    
                             </div> `;
 
-                        // Mengisi modal dengan data pesanan yang diterima dari server
                         $('#orderDetails').html(`
                         <div class="row">
                             <div class="col">
@@ -251,26 +308,6 @@
                     },
                     error: function() {
                         alert('Gagal memuat detail pesanan.');
-                    }
-                });
-                
-            });
-
-            $('#searchBar').on('keyup', function(){
-                var query = $(this).val();
-                $.ajax({
-                    url: '/search_order',
-                    method: 'GET',
-                    data: {query: query},
-                    success: function(data) {
-                        $.each(data, function(index, item) {
-                            $('#dataOrder').html(`
-                                <td>${item.name}</td>
-                            `);
-                        });
-                    },
-                    error: function(){
-                        alert('gagal');
                     }
                 });
             });

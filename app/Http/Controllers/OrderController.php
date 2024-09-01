@@ -154,23 +154,22 @@ class OrderController extends Controller
     }
 
     // fungsi pencarian
-    public function search(Request $request){
-        dd($request);
-        $search = $request->input('query');
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+        $status = $request->input('status');
 
-        $orders = Order::with('product', 'status')
-            ->when($search, function ($query, $search) {
-                return $query->where('name', 'like', '%' . $search . '%')->orWhere('total_price', 'like', '%' . $search . '%')
-                            ->orWhereHas('product', function ($query) use ($search) {
-                                $query->where('name', 'like', '%' . $search . '%');
-                            })
-                            ->orWhereHas('status', function ($query) use ($search) {
-                                $query->where('name', 'like', '%' . $search . '%');
-                            });
+        $orders = Order::query()
+            ->when($query, function ($q) use ($query) {
+                $q->where('name', 'like', '%' . $query . '%');
             })
-            ->paginate(10);;
+            ->when($status, function ($q) use ($status) {
+                $q->where('status_id', $status);
+            })
+            ->with(['product', 'variant', 'status'])
+            ->get();
 
-        return response()->json($orders);
+        return response()->json(['orders' => $orders]);
     }
 
     // Update the status of an order
