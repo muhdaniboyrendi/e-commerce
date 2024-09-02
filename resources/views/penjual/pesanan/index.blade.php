@@ -8,9 +8,7 @@
                 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                     <ol class="breadcrumb">
                       <li class="breadcrumb-item"><a href="#">Toko Erlan</a></li>
-                      <li class="breadcrumb-item"><a href="#">Produk</a></li>
-                      <li class="breadcrumb-item"><a href="#">Aksesoris</a></li>
-                      <li class="breadcrumb-item active" aria-current="page">Asus Vivobook OLED 15</li>
+                      <li class="breadcrumb-item active" aria-current="page">kelola Pesanan</li>
                     </ol>
                 </nav>
             </div>

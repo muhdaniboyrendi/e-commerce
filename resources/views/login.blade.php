@@ -7,10 +7,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: #f8f9fa;
+            background-color: #3B71CA;
         }
         .login-container {
-            max-width: 400px;
+            max-width: 500px;
             margin-top: 100px;
         }
     </style>
@@ -18,18 +18,19 @@
 <body>
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-6 login-container">
+            <div class="col-md-8 login-container">
                 <div class="card shadow">
-                    <div class="card-body">
+                    <div class="card-body m-3">
                         <h2 class="text-center mb-4">Login</h2>
-                        <form>
+                        <form method="post" action="/login">
+                            @csrf
                             <div class="mb-3">
                                 <label for="email" class="form-label">Alamat Email</label>
-                                <input type="email" class="form-control" id="email" placeholder="nama@contoh.com" required>
+                                <input type="email" name="email" class="form-control" id="email" placeholder="nama@contoh.com" required>
                             </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label">Kata Sandi</label>
-                                <input type="password" class="form-control" id="password" placeholder="Masukkan kata sandi" required>
+                                <input type="password" name="password" class="form-control" id="password" placeholder="Masukkan kata sandi" required>
                             </div>
                             <div class="mb-3 form-check">
                                 <input type="checkbox" class="form-check-input" id="rememberMe">
@@ -43,9 +44,6 @@
                             <a href="#" class="text-decoration-none">Lupa kata sandi?</a>
                         </div>
                     </div>
-                </div>
-                <div class="text-center mt-3">
-                    Belum punya akun? <a href="#" class="text-decoration-none">Daftar di sini</a>
                 </div>
             </div>
         </div>

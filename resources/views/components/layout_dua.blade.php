@@ -49,6 +49,8 @@
                 <x-footer></x-footer>
             </div>
 
+            <x-logout></x-logout>
+
         </div>
         <!--   Core JS Files   -->
         <script src="../assets/js/core/jquery-3.7.1.min.js"></script>

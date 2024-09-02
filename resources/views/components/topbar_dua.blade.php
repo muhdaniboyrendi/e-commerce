@@ -33,29 +33,38 @@
                     </div>
                     <span class="profile-username">
                         <span class="op-7">Hi,</span>
-                        <span class="fw-bold">Erlan</span>
+                        <span class="fw-bold">{{ Auth::check() ? auth()->user()->name : 'Customer' }}</span>
                     </span>
                 </a>
                 <ul class="dropdown-menu dropdown-user animated fadeIn">
                     <div class="dropdown-user-scroll scrollbar-outer">
-                        <li>
-                            <div class="user-box">
-                                <div class="avatar-lg">
-                                    <img src="../assets/img/profile.jpg" alt="image profile" class="avatar-img rounded"/>
+                        @if (Auth::check())
+                            <li>
+                                <div class="user-box">
+                                    <div class="avatar-lg">
+                                        <img src="../assets/img/profile.jpg" alt="image profile" class="avatar-img rounded"/>
+                                    </div>
+                                    <div class="u-text">
+                                        <h4>{{ auth()->user()->name }}</h4>
+                                        <p class="text-muted">{{ auth()->user()->email }}</p>
+                                    </div>
                                 </div>
-                                <div class="u-text">
-                                    <h4>Erlan</h4>
-                                    <p class="text-muted">hello@example.com</p>
-                                </div>
-                            </div>
-                        </li>
+                            </li>
+                        @endif
+
                         <li>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Profile Saya</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Sign up</a>
-                            <a class="dropdown-item" href="#">Sign in</a>
-                            <a class="dropdown-item" href="#">Logout</a>
+                            @if (Auth::check())
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Profile Saya</a>
+                            @endif
+
+                            @if (!Auth::check())
+                                <a class="dropdown-item" href="/login">Login</a>
+                            @endif
+
+                            @if (Auth::check())
+                                <a type="submit" class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">Logout</a>
+                            @endif
                         </li>
                     </div>
                 </ul>

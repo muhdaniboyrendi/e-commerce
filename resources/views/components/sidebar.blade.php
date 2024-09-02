@@ -23,85 +23,98 @@
     <div class="sidebar-wrapper scrollbar scrollbar-inner">
         <div class="sidebar-content">
             <ul class="nav nav-secondary">
-                <li class="nav-item {{ $active == "home" ? 'active' : '' }}">
-                    <a href="/">
-                        <i class="fas fa-home"></i>
-                        <p>Home</p>
-                    </a>
-                </li>
-                <li class="nav-item {{ $active == "dashboard" ? 'active' : '' }}">
-                    <a href="/dashboard">
-                        <i class="fas fa-desktop"></i>
-                        <p>Dashboard</p>
-                    </a>
-                </li>
-                <li class="nav-section">
-                    <span class="sidebar-mini-icon">
-                        <i class="fa fa-ellipsis-h"></i>
-                    </span>
-                    <h4 class="text-section">Products</h4>
-                </li>
-                <li class="nav-item">
-                    <a data-bs-toggle="collapse" href="#base">
-                        <i class="fas fa-layer-group"></i>
-                        <p>Produk Kami</p>
-                        <span class="caret"></span>
-                    </a>
-                    <div class="collapse" id="base">
-                        <ul class="nav nav-collapse">
-                            <li>
-                                <a href="/products">
-                                    <span class="sub-item">All</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/products">
-                                    <span class="sub-item">Pakaian Atas</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/products">
-                                    <span class="sub-item">Pakaian Bawah</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/products">
-                                    <span class="sub-item">Aksesoris</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-                <li class="nav-item {{ $active == "pesanan" ? 'active' : '' }}">
-                    <a href="/pesanan">
-                        <i class="fas fa-clipboard-list"></i>
-                        <p>Pesanan</p>
-                        <span class="badge badge-danger">0</span>
-                        <span class="badge badge-warning">0</span>
-                        <span class="badge badge-success">0</span>
-                    </a>
-                </li>
-                <li class="nav-section">
-                    <span class="sidebar-mini-icon">
-                        <i class="fa fa-ellipsis-h"></i>
-                    </span>
-                    <h4 class="text-section">Penjual</h4>
-                </li>
-                <li class="nav-item {{ $active == "kelola_produk" ? 'active' : '' }}">
-                    <a href="/kelola_produk">
-                        <i class="fas fa-luggage-cart"></i>
-                        <p>Kelola Produk</p>
-                    </a>
-                </li>
-                <li class="nav-item {{ $active == "kelola_pesanan" ? 'active' : '' }}">
-                    <a href="/kelola_pesanan">
-                        <i class="fas fa-clipboard-list"></i>
-                        <p>Pesanan</p>
-                        <span class="badge badge-danger">0</span>
-                        <span class="badge badge-warning">0</span>
-                        <span class="badge badge-success">0</span>
-                    </a>
-                </li>
+
+                @if (!Auth::check())
+                    <li class="nav-item {{ $active == "home" ? 'active' : '' }}">
+                        <a href="/">
+                            <i class="fas fa-home"></i>
+                            <p>Home</p>
+                        </a>
+                    </li>
+                @endif
+
+                @if (Auth::check())
+                    <li class="nav-item {{ $active == "dashboard" ? 'active' : '' }}">
+                        <a href="/dashboard">
+                            <i class="fas fa-desktop"></i>
+                            <p>Dashboard</p>
+                        </a>
+                    </li>
+                @endif
+
+                @if (!Auth::check())
+                    <li class="nav-section">
+                        <span class="sidebar-mini-icon">
+                            <i class="fa fa-ellipsis-h"></i>
+                        </span>
+                        <h4 class="text-section">Products</h4>
+                    </li>
+                    <li class="nav-item {{ $active == "produk" ? 'active' : '' }}">
+                        <a data-bs-toggle="collapse" href="#base">
+                            <i class="fas fa-layer-group"></i>
+                            <p>Produk Kami</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse" id="base">
+                            <ul class="nav nav-collapse">
+                                <li>
+                                    <a href="/products">
+                                        <span class="sub-item">All</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/products">
+                                        <span class="sub-item">Pakaian Atas</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/products">
+                                        <span class="sub-item">Pakaian Bawah</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/products">
+                                        <span class="sub-item">Aksesoris</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item {{ $active == "pesanan" ? 'active' : '' }}">
+                        <a href="/pesanan">
+                            <i class="fas fa-clipboard-list"></i>
+                            <p>Pesanan</p>
+                            <span class="badge badge-danger">0</span>
+                            <span class="badge badge-warning">0</span>
+                            <span class="badge badge-success">0</span>
+                        </a>
+                    </li>
+                @endif
+
+                @if (Auth::check())
+                    <li class="nav-section">
+                        <span class="sidebar-mini-icon">
+                            <i class="fa fa-ellipsis-h"></i>
+                        </span>
+                        <h4 class="text-section">Penjual</h4>
+                    </li>
+                    <li class="nav-item {{ $active == "kelola_produk" ? 'active' : '' }}">
+                        <a href="/kelola_produk">
+                            <i class="fas fa-luggage-cart"></i>
+                            <p>Kelola Produk</p>
+                        </a>
+                    </li>
+                    <li class="nav-item {{ $active == "kelola_pesanan" ? 'active' : '' }}">
+                        <a href="/kelola_pesanan">
+                            <i class="fas fa-clipboard-list"></i>
+                            <p>Pesanan</p>
+                            <span class="badge badge-danger">0</span>
+                            <span class="badge badge-warning">0</span>
+                            <span class="badge badge-success">0</span>
+                        </a>
+                    </li>
+                @endif
+
             </ul>
         </div>
     </div>
