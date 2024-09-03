@@ -32,8 +32,10 @@ Route::get('/calculate-shipping/{cityId}/{courier}/{weight}', [AddressController
 
 // penjual
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth');
-Route::get('/profile', [PenjualController::class, 'profile'])->middleware('auth');
-Route::get('/edit_profile', [PenjualController::class, 'edit'])->middleware('auth');
+Route::get('/profile/{user:id}', [UserController::class, 'profile'])->middleware('auth');
+Route::post('/profile', [UserController::class, 'storeProfile'])->middleware('auth');
+Route::get('/edit_profile', [UserController::class, 'edit'])->middleware('auth');
+Route::put('/edit_profile', [UserController::class, 'update'])->middleware('auth');
 // produk
 Route::get('/kelola_produk', [ProductController::class, 'index'])->middleware('auth');
 Route::post('/search', [ProductController::class, 'search'])->middleware('auth');
@@ -50,8 +52,8 @@ Route::get('/search_order', [OrderController::class, 'search'])->middleware('aut
 
 
 // auth
-Route::get('/tambahadmin', [UserController::class, 'create'])->middleware('auth');
-Route::post('/tambahadmin', [UserController::class, 'store'])->middleware('auth');
+Route::get('/tambahadmin', [UserController::class, 'create']);
+Route::post('/tambahadmin', [UserController::class, 'store']);
 Route::get('/login', [UserController::class, 'login'])->middleware('guest');
 Route::post('/login', [UserController::class, 'authenticate'])->middleware('guest');
 Route::post('/logout', [UserController::class, 'logout']);

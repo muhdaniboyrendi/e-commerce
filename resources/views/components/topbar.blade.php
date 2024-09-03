@@ -55,7 +55,10 @@
                         <li>
                             @if (Auth::check())
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#">Profile Saya</a>
+                                <form action="/profile/{{ auth()->user()->id }}" method="get">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item">Profile Saya</button>
+                                </form>
                             @endif
 
                             @if (!Auth::check())

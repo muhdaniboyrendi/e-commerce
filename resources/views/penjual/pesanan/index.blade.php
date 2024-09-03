@@ -29,7 +29,7 @@
                     </div>
                     <div class="col-md-3">
                         <select id="searchSelect" class="form-control" name="search">
-                            <option selected>Filter Status</option>
+                            <option value="" selected>Filter Status</option>
                             @foreach ($statuses as $status)
                                 <option value="{{ $status['id'] }}">{{ $status['name'] }}</option>
                             @endforeach
@@ -44,6 +44,7 @@
                         <th>Nama Pembeli</th>
                         <th>Produk</th>
                         <th>Total Harga</th>
+                        <th>Tanggal Pemesanan</th>
                         <th>Status</th>
                         <th>Aksi</th>
                     </tr>
@@ -54,6 +55,7 @@
                             <td>{{ $order->name }}</td>
                             <td>{{ $order->product->name ?? 'N/A' }} ({{ $order->variant->name ?? 'N/A' }})</td>
                             <td>Rp {{ number_format($order->total_price, 0, ',', '.') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($order->created_at)->translatedFormat('d F Y || H:i') }}</td>
                             <td><span class="badge text-bg-{{ $order->status->color }}">{{ $order->status->name }}</span></td>
                             <td>
                                 <div class="btn-group" role="group" aria-label="Basic example">
@@ -103,6 +105,8 @@
 
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
     <script>
         $(document).ready(function() {
             // fungsi search
@@ -123,6 +127,8 @@
                             let product = order.product ? order.product.name : 'N/A';
                             let variant = order.variant ? order.variant.name : 'N/A';
                             let totalPrice = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(order.total_price);
+                            let orderDate = order.created_at;
+                            let formattedDate = moment(orderDate).format('D MMMM YYYY || HH:mm');
                             let statusBadge = `<span class="badge text-bg-${order.status.color}">${order.status.name}</span>`;
     
                             // Append the new row to the table body
@@ -131,6 +137,7 @@
                                     <td>${order.name}</td>
                                     <td>${product} (${variant})</td>
                                     <td>${totalPrice}</td>
+                                    <td>${formattedDate}</td>
                                     <td>${statusBadge}</td>
                                     <td>
                                         <div class="btn-group" role="group" aria-label="Basic example">
