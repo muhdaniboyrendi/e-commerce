@@ -196,6 +196,13 @@ class OrderController extends Controller
     public function viewPrint($id){
         $order = Order::with(['product', 'variant', 'address', 'status'])->find($id);
 
-        return view('penjual.pesanan.lembar_pengiriman', compact('order'), ['title' => 'Cetak Lembar Pengiriman', 'active' => 'kelola_pesanan']);
+        // Mengambil nama provinsi dan kota dari API Raja Ongkir
+        $provinceResponse = $this->rajaOngkirService->getProvince($order->address->provinsi);
+        $cityResponse = $this->rajaOngkirService->getCity($order->address->kota);
+
+        $provinceName = $provinceResponse['rajaongkir']['results']['province'] ?? 'Unknown Province';
+        $cityName = $cityResponse['rajaongkir']['results']['city_name'] ?? 'Unknown City';
+
+        return view('penjual.pesanan.lembar_pengiriman', compact('order', 'provinceName', 'cityName'), ['title' => 'Cetak Lembar Pengiriman', 'active' => 'kelola_pesanan']);
     }
 }

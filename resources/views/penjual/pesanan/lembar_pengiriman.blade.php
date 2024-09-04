@@ -1,6 +1,31 @@
 <x-layout_dua>
     <x-slot:title>{{ $title }}</x-slot>
     <x-slot:active>{{ $active }}</x-slot>
+
+    <style>
+        @media print {
+            /* Hanya tampilkan bagian yang ingin dicetak */
+            body * {
+                visibility: hidden;
+            }
+    
+            #printableArea, #printableArea * {
+                visibility: visible;
+            }
+    
+            #printableArea {
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
+    
+            /* Contoh, sembunyikan tombol cetak */
+            .no-print {
+                display: none;
+            }
+        }
+    </style>
+    
       
     <div class="container">
         <div class="page-inner">
@@ -14,55 +39,60 @@
                     </ol>
                 </nav>
             </div>
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-12 text-center">
-                            <h1>Invoice</h1>
-                            <h4>Order ID: {{ $order->id }}</h4>
-                            <p>Date: {{ $order->created_at->format('d M Y') }}</p>
+            <div id="printableArea">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-7">
+                                <h5>Penerima</h5>
+                                <span>Nama : {{ $order->name }}</span><br>
+                                <span>Telepon : {{ $order->telp }}</span><br>
+                                <span>Alamat : {{ $order->address->desa }}, {{ $order->address->kecamatan }}, {{ $cityName }}, {{ $provinceName }}, {{ $order->address->kode_pos }}, {{ $order->address->alamat }}</span>
+                            </div>
+                            <div class="col-md-5">
+                                <h5>Pengirim</h5>
+                                <span>Nama : Toko Erlan</span><br>
+                                <span>Telepon : 082220633024</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row mt-4">
-                        <div class="col-12">
-                            <h5>Customer Information</h5>
-                            <p>Name: {{ $order->customer_name }}</p>
-                            <p>Email: {{ $order->customer_email }}</p>
-                            <p>Address: {{ $order->customer_address }}</p>
-                        </div>
-                    </div>
-                    <div class="row mt-4">
-                        <div class="col-12">
-                            <h5>Order Details</h5>
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>Product</th>
-                                        <th>Quantity</th>
-                                        <th>Price</th>
-                                        <th>Total</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <h5>Detail Pesanan</h5>
+                                <table class="table table-bordered">
+                                    <thead>
                                         <tr>
-                                            <td>{{ $order->product->name }}</td>
-                                            <td>{{ $order->quantity }}</td>
-                                            <td>{{ number_format($order->price, 2) }}</td>
-                                            <td>{{ number_format($order->quantity * $order->price, 2) }}</td>
+                                            <th>Produk</th>
+                                            <th>Quantity</th>
+                                            <th>Harga</th>
+                                            <th>Total</th>
                                         </tr>
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                            <tr>
+                                                <td>{{ $order->product->name }}</td>
+                                                <td>{{ $order->quantity }}</td>
+                                                <td>Rp {{ number_format($order->product->price, 0, ',', '.') }}</td>
+                                                <td>Rp {{ number_format($order->total_price, 0, ',', '.') }}</td>
+                                            </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row mt-4">
-                        <div class="col-12 text-right">
-                            <h4>Total: {{ number_format($order->total, 2) }}</h4>
+                        <div class="row-mt-4">
+                            <span>Metode Pembayaran : <strong>{{ $order->payment_method == "bank_transfer" ? 'Transfer Bank' : 'COD' }}</strong></span><br>
+                            <span>Jasa Pengiriman : <strong>{{ strtoupper($order->courier) }}</strong></span><br>
+                            <span>Tanggal Pemesanan : {{ \Carbon\Carbon::parse($order->created_at)->translatedFormat('d F Y') }}</span>
                         </div>
-                    </div>
-                    <div class="row mt-4">
-                        <div class="col-12 text-center">
-                            <a href="?kelola_pesanan" class="btn btn-primary">Back to Orders</a>
-                            <button onclick="window.print();" class="btn btn-success">Print Invoice</button>
+                        <div class="row mt-3">
+                            <div class="col-12 text-right">
+                                <h4>Total yang harus dibayar : Rp {{ $order->payment_method == "cash_on_delivery" ? number_format($order->total_price, 0, ',', '.') : 0 }}</h4>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-12 text-center">
+                                <a href="/kelola_pesanan" class="btn btn-primary no-print">Kembali</a>
+                                <button onclick="window.print();" class="btn btn-success no-print">Cetak</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -70,5 +100,5 @@
         </div>
     </div>
 
-    
+
 </x-layout_dua>
