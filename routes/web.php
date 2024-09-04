@@ -49,6 +49,7 @@ Route::get('/kelola_pesanan', [OrderController::class, 'index'])->middleware('au
 Route::get('/orders/{id}', [OrderController::class, 'show'])->middleware('auth');
 Route::post('/update_pesanan', [OrderController::class, 'updateStatus'])->middleware('auth');
 Route::get('/search_order', [OrderController::class, 'search'])->middleware('auth');
+Route::get('/lembar_pengiriman/{order:id}', [OrderController::class, 'viewPrint'])->middleware('auth');
 
 
 // auth

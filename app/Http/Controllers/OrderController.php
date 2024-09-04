@@ -191,4 +191,11 @@ class OrderController extends Controller
 
         return back()->with('success', 'Status pesanan berhasil diperbarui.');
     }
+
+    // tampilan halaman cetak lembar pengiriman
+    public function viewPrint($id){
+        $order = Order::with(['product', 'variant', 'address', 'status'])->find($id);
+
+        return view('penjual.pesanan.lembar_pengiriman', compact('order'), ['title' => 'Cetak Lembar Pengiriman', 'active' => 'kelola_pesanan']);
+    }
 }

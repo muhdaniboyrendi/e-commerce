@@ -89,12 +89,8 @@
                         </div>
                         <form action="/update_pesanan" method="POST">
                             @csrf
-                            <div class="modal-body">
-
-                                <div id="orderDetails">
-                                    <!-- Detail Pesanan akan dimuat di sini melalui AJAX -->
-                                </div>
-
+                            <div id="orderDetails">
+                                <!-- Detail Pesanan akan dimuat di sini melalui AJAX -->
                             </div>
                         </form>
                     </div>
@@ -187,128 +183,133 @@
                             </div> `;
 
                         $('#orderDetails').html(`
-                        <div class="row">
-                            <div class="col">
-                                <h5><strong>Informasi Pelanggan</strong></h5>
-                                <div class="row">
-                                    <div class="col-md-2">
-                                        Nama
-                                    </div>
-                                    <div class="col-md-10">
-                                        : ${response.name}
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-2">
-                                        Telepon
-                                    </div>
-                                    <div class="col-md-10">
-                                        : ${response.telp}
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-2">
-                                        Email
-                                    </div>
-                                    <div class="col-md-10">
-                                        : ${response.email}
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-2">
-                                        Alamat
-                                    </div>
-                                    <div class="col-md-10">
-                                        : ${response.desa}, ${response.kecamatan}, ${response.kota}, ${response.provinsi}, ${response.kode_pos}, ${response.alamat}
-                                    </div>
-                                </div>
-                                <h5 class="mt-3"><strong>Informasi Produk</strong></h5>
-                                <div class="row">
-                                    <div class="col-md-2">
-                                        Nama
-                                    </div>
-                                    <div class="col-md-10">
-                                        : ${response.product_name}
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-2">
-                                        Varian
-                                    </div>
-                                    <div class="col-md-10">
-                                        : ${response.variant}
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-2">
-                                        Harga
-                                    </div>
-                                    <div class="col-md-10">
-                                        : Rp ${response.price}
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col">
-                                <h5 class="pt-0"><strong>Informasi Pesanan</strong></h5>
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        Jumlah
-                                    </div>
-                                    <div class="col-md-9">
-                                        : ${response.quantity}
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        Kurir
-                                    </div>
-                                    <div class="col-md-9">
-                                        : ${response.courier}
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        Pembayaran
-                                    </div>
-                                    <div class="col-md-9">
-                                        : ${response.payment_method}
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        Subtotal
-                                    </div>
-                                    <div class="col-md-9">
-                                        : Rp ${response.total_price}
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        Status
-                                    </div>
-                                    <div class="col-md-9">
-                                        : <strong>${response.status}</strong>
-                                    </div>
-                                </div>
-                                <h6 class="mt-3"><strong>Perbarui Status</strong></h6>
+                            <div class="modal-body">
                                 <div class="row">
                                     <div class="col">
-                                        <div class="input-group mb-3">
-                                            <input type="hidden" name="order_id" id="order_id" value="${response.id}">
-                                            <select class="form-select" name="status" id="orderStatus">
-                                                <option>Status</option>
-                                                @foreach($statuses as $status)
-                                                    <option value="{{ $status->id }}">{{ $status->name }}</option>
-                                                @endforeach
-                                            </select>
-                                            <button type="submit" class="btn btn-primary" id="button-addon2">Simpan</button>
+                                        <h5><strong>Informasi Pelanggan</strong></h5>
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                Nama
+                                            </div>
+                                            <div class="col-md-10">
+                                                : ${response.name}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                Telepon
+                                            </div>
+                                            <div class="col-md-10">
+                                                : ${response.telp}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                Email
+                                            </div>
+                                            <div class="col-md-10">
+                                                : ${response.email}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                Alamat
+                                            </div>
+                                            <div class="col-md-10">
+                                                : ${response.desa}, ${response.kecamatan}, ${response.kota}, ${response.provinsi}, ${response.kode_pos}, ${response.alamat}
+                                            </div>
+                                        </div>
+                                        <h5 class="mt-3"><strong>Informasi Produk</strong></h5>
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                Nama
+                                            </div>
+                                            <div class="col-md-10">
+                                                : ${response.product_name}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                Varian
+                                            </div>
+                                            <div class="col-md-10">
+                                                : ${response.variant}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                Harga
+                                            </div>
+                                            <div class="col-md-10">
+                                                : Rp ${response.price}
+                                            </div>
                                         </div>
                                     </div>
+
+                                    <div class="col">
+                                        <h5 class="pt-0"><strong>Informasi Pesanan</strong></h5>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                Jumlah
+                                            </div>
+                                            <div class="col-md-9">
+                                                : ${response.quantity}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                Kurir
+                                            </div>
+                                            <div class="col-md-9">
+                                                : ${response.courier}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                Pembayaran
+                                            </div>
+                                            <div class="col-md-9">
+                                                : ${response.payment_method}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                Subtotal
+                                            </div>
+                                            <div class="col-md-9">
+                                                : Rp ${response.total_price}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                Status
+                                            </div>
+                                            <div class="col-md-9">
+                                                : <strong>${response.status}</strong>
+                                            </div>
+                                        </div>
+                                        <h6 class="mt-3"><strong>Perbarui Status</strong></h6>
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="input-group mb-3">
+                                                    <input type="hidden" name="order_id" id="order_id" value="${response.id}">
+                                                    <select class="form-select" name="status" id="orderStatus">
+                                                        <option>Status</option>
+                                                        @foreach($statuses as $status)
+                                                            <option value="{{ $status->id }}">{{ $status->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    <button type="submit" class="btn btn-primary" id="button-addon2">Simpan</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>    
                                 </div>
-                            </div>    
-                        </div>
-                        ${response.payment_method == 'bank_transfer' ? paymentProof : ''}
+                                ${response.payment_method == 'bank_transfer' ? paymentProof : ''}
+                            </div>
+                            <div class="modal-footer">
+                                <a href="/lembar_pengiriman/${response.id}" class="btn btn-primary">Cetak Lembar Pengiriman</a>
+                            </div>
                         `);
                     },
                     error: function() {

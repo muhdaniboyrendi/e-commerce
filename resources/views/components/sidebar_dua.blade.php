@@ -49,7 +49,7 @@
                         </span>
                         <h4 class="text-section">Products</h4>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item {{ $active == "produk" ? 'active' : '' }}">
                         <a data-bs-toggle="collapse" href="#base">
                             <i class="fas fa-layer-group"></i>
                             <p>Produk Kami</p>
@@ -80,15 +80,14 @@
                             </ul>
                         </div>
                     </li>
-                    <li class="nav-item {{ $active == "pesanan" ? 'active' : '' }}">
-                        <a href="/pesanan">
-                            <i class="fas fa-clipboard-list"></i>
-                            <p>Pesanan</p>
-                            <span class="badge badge-danger">0</span>
-                            <span class="badge badge-warning">0</span>
-                            <span class="badge badge-success">0</span>
-                        </a>
-                    </li>
+                    @if ($active == "pesanan")
+                        <li class="nav-item {{ $active == "pesanan" ? 'active' : '' }}">
+                            <a href="/pesanan">
+                                <i class="fas fa-clipboard-list"></i>
+                                <p>Pesanan</p>
+                            </a>
+                        </li>
+                    @endif
                 @endif
 
                 @if (Auth::check())

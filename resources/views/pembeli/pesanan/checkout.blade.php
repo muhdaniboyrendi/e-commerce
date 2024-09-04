@@ -34,61 +34,116 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="name">Nama Pembeli:</label>
-                                    <input type="text" name="name" class="form-control" required>
+                                    <input type="text" name="name" class="form-control @error('name') id-invalid @enderror" required>
+                                    @error('name')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
                                 <div class="form-group">
                                     <label for="telp">Nomor HP:</label>
-                                    <input type="text" name="telp" class="form-control" required>
+                                    <input type="text" name="telp" class="form-control @error('telpl') id-invalid @enderror" required>
+                                    @error('telp')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
                                 <div class="form-group">
                                     <label for="email">Email:</label>
-                                    <input type="email" name="email" class="form-control" required>
+                                    <input type="email" name="email" class="form-control @error('email') id-invalid @enderror" required>
+                                    @error('email')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
                                 <div class="form-group">
                                     <label for="provinsi">Provinsi:</label>
-                                    <select id="provinsi" name="provinsi" class="form-control" required>
+                                    <select id="provinsi" name="provinsi" class="form-control @error('provinsi') id-invalid @enderror" required>
                                         <option value="">Pilih Provinsi</option>
                                     </select>
+                                    @error('provinsi')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
                                 <div class="form-group">
                                     <label for="kota">Kabupaten/Kota:</label>
-                                    <select id="kota" name="kota" class="form-control" required>
+                                    <select id="kota" name="kota" class="form-control @error('kota') id-invalid @enderror" required>
                                         <option value="">Pilih Kabupaten/Kota</option>
                                     </select>
+                                    @error('kota')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
                                 <div class="form-group">
                                     <label for="kecamatan">Kecamatan:</label>
-                                    <input type="text" id="kecamatan" name="kecamatan" class="form-control" required>
+                                    <input type="text" id="kecamatan" name="kecamatan" class="form-control @error('kecamatan') id-invalid @enderror" required>
+                                    @error('kecamatan')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
                                 <div class="form-group">
                                     <label for="desa">Kelurahan/Desa:</label>
-                                    <input type="text" id="desa" name="desa" class="form-control" required>
+                                    <input type="text" id="desa" name="desa" class="form-control @error('desa') id-invalid @enderror" required>
+                                    @error('desa')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
                                 <div class="form-group">
                                     <label for="kode_pos">Kode POS:</label>
-                                    <input type="text" id="kode_pos" name="kode_pos" class="form-control" required>
+                                    <input type="text" id="kode_pos" name="kode_pos" class="form-control @error('kode_pos') id-invalid @enderror" required>
+                                    @error('kode_pos')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
                                 <div class="form-group">
                                     <label for="alamat">Detail Alamat:</label>
-                                    <textarea name="alamat" class="form-control" rows="4" placeholder="(No. Rumah, Dusun rt/rw, Nama Jalan, Nama Gedung, dll.)" required></textarea>
+                                    <textarea name="alamat" class="form-control @error('alamat') id-invalid @enderror" rows="4" placeholder="(No. Rumah, Dusun rt/rw, Nama Jalan, Nama Gedung, dll.)" required></textarea>
+                                    @error('alamat')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="courier">Kurir:</label>
-                                    <select id="courier" name="courier" class="form-control" required>
+                                    <select id="courier" name="courier" class="form-control @error('courier') id-invalid @enderror" required>
                                         <option value="jne">JNE</option>
                                         <option value="jnt">J&T</option>
                                         <option value="tiki">TIKI</option>
                                         <option value="pos">POS Indonesia</option>
                                     </select>
+                                    @error('courier')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
                                 <div class="form-group">
                                     <label for="payment_method">Metode Pembayaran:</label>
-                                    <select name="payment_method" class="form-control" required>
+                                    <select name="payment_method" class="form-control @error('payment_method') id-invalid @enderror" required>
                                         <option value="bank_transfer">Transfer Bank</option>
                                         <option value="cash_on_delivery">Bayar di Tempat (COD)</option>
                                     </select>
+                                    @error('payment_method')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
                                 <div class="form-group">
                                     <h3>{{ $product->name }}</h3>
