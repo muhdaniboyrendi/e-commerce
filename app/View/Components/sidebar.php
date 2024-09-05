@@ -3,8 +3,9 @@
 namespace App\View\Components;
 
 use Closure;
-use Illuminate\Contracts\View\View;
+use App\Models\Order;
 use Illuminate\View\Component;
+use Illuminate\Contracts\View\View;
 
 class sidebar extends Component
 {
@@ -21,6 +22,11 @@ class sidebar extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.sidebar');
+        $warning = Order::where('status_id', 1)->count();
+        $info = Order::where('status_id', 2)->count();
+        $primary = Order::where('status_id', 3)->count();
+        $success = Order::where('status_id', 4)->count();
+
+        return view('components.sidebar',compact('warning', 'info', 'primary', 'success'));
     }
 }

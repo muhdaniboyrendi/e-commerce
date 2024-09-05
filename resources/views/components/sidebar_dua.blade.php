@@ -107,12 +107,14 @@
                         <a href="/kelola_pesanan">
                             <i class="fas fa-clipboard-list"></i>
                             <p>Pesanan</p>
-                            <span class="badge badge-danger">0</span>
-                            <span class="badge badge-warning">0</span>
-                            <span class="badge badge-success">0</span>
+                            <span class="badge badge-warning">{{ $warning }}</span>
+                            <span class="badge badge-info">{{ $info }}</span>
+                            <span class="badge badge-primary">{{ $primary }}</span>
+                            <span class="badge badge-success">{{ $success }}</span>
                         </a>
                     </li>
                 @endif
+
             </ul>
         </div>
     </div>

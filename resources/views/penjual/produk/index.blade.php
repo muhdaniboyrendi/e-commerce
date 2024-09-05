@@ -209,6 +209,9 @@
     </div>
 
 
+    <!-- Include jQuery, DataTables JS, and Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script>
         let variantCount = 1;
         
