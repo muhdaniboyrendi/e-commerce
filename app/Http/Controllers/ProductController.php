@@ -192,15 +192,48 @@ class ProductController extends Controller
 
 
     // pembeli
-    // tampilan halaman produk
+    // tampilan halaman produk (all products)
     public function produk(){
-        $products = Product::with(['category', 'product_variants'])->paginate(10);
+        $products = Product::with(['category', 'product_variants'])->get();
 
         $product = new Product();
         $categories = Category::all();
         $product_variant = new ProductVariant();
         
         return view('pembeli.produk.products', compact('product', 'categories', 'product_variant', 'products'), ['title' => 'Produk', 'active' => 'produk']);
+    }
+
+    // tampilan halaman produk (pakaian atas)
+    public function produkAtas(){
+        $products = Product::with(['category', 'product_variants'])->where('category_id', 1)->get();
+
+        $product = new Product();
+        $categories = Category::all();
+        $product_variant = new ProductVariant();
+        
+        return view('pembeli.produk.productsAtas', compact('product', 'categories', 'product_variant', 'products'), ['title' => 'Produk', 'active' => 'produk']);
+    }
+
+    // tampilan halaman produk (pakaian bawah)
+    public function produkBawah(){
+        $products = Product::with(['category', 'product_variants'])->where('category_id', 2)->get();
+
+        $product = new Product();
+        $categories = Category::all();
+        $product_variant = new ProductVariant();
+        
+        return view('pembeli.produk.productsBawah', compact('product', 'categories', 'product_variant', 'products'), ['title' => 'Produk', 'active' => 'produk']);
+    }
+
+    // tampilan halaman produk (aksesoris)
+    public function produkAksesoris(){
+        $products = Product::with(['category', 'product_variants'])->where('category_id', 3)->get();
+
+        $product = new Product();
+        $categories = Category::all();
+        $product_variant = new ProductVariant();
+        
+        return view('pembeli.produk.productsAksesoris', compact('product', 'categories', 'product_variant', 'products'), ['title' => 'Produk', 'active' => 'produk']);
     }
     
     // tampilan halaman info produk

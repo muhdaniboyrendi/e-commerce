@@ -60,17 +60,17 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/products">
+                                    <a href="/products_atas">
                                         <span class="sub-item">Pakaian Atas</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/products">
+                                    <a href="/products_bawah">
                                         <span class="sub-item">Pakaian Bawah</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/products">
+                                    <a href="/products_aksesoris">
                                         <span class="sub-item">Aksesoris</span>
                                     </a>
                                 </li>

@@ -21,7 +21,14 @@
                 </div>
             @endif
 
-            <h1 class="mb-1">Edit Account</h1>
+            <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-2">
+                <div>
+                  <h1 class="fw-bold mb-3">Edit Account</h1>
+                </div>
+                <div class="ms-md-auto py-2 py-md-0">
+                  <button type="button" class="btn btn-label-info btn-round me-2" data-bs-toggle="modal" data-bs-target="#adminModal">Tambah Admin</button>
+                </div>
+            </div>
         
             <div class="row">
                         
@@ -76,5 +83,25 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="adminModal" tabindex="-1" aria-labelledby="adminModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-danger">
+                    <h1 class="modal-title fs-5" id="adminModalLabel">Tambah Admin</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Jika anda menambahkan admin maka akan ada orang lain yang bisa memelola aplikasi toko anda. Apakah anda yakin?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                    <a href="/tambahadmin" class="btn btn-primary">Yes</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 </x-layout>

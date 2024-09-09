@@ -31,7 +31,6 @@
                         <div class="col-md-4">
                             <div class="card">
                                 <div class="card-body text-center">
-                                    <img src="https://via.placeholder.com/150" class="rounded-circle mb-3" alt="Foto Profil">
                                     <h4>{{ auth()->user()->name }}</h4>
                                     <p class="text-muted">Penjual</p>
                                     <a href="/edit_profile" class="btn btn-primary btn-sm"><i class="bi bi-pencil"></i> Edit Account</a>

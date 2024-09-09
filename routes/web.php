@@ -15,6 +15,9 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 Route::get('/', [HomeController::class, 'index'])->middleware('guest');
 // produk
 Route::get('/products', [ProductController::class, 'produk'])->middleware('guest');
+Route::get('/products_atas', [ProductController::class, 'produkAtas'])->middleware('guest');
+Route::get('/products_bawah', [ProductController::class, 'produkBawah'])->middleware('guest');
+Route::get('/products_aksesoris', [ProductController::class, 'produkAksesoris'])->middleware('guest');
 Route::get('/info_produk/{product:id}', [ProductController::class, 'info'])->middleware('guest');
 // pesanan
 Route::get('/order/{product:id}', [OrderController::class, 'create'])->middleware('guest');

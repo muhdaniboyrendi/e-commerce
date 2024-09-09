@@ -65,6 +65,7 @@
                                     <input type="password" name="password_confirmation" class="form-control @error('password') is-invalid @enderror" id="confirmPassword" required>
                                 </div>
                                         
+                                <a href="/edit_profile" class="btn btn-danger">Batal</a>
                                 <button type="submit" class="btn btn-primary">Tambah</button>
                             </form>
                         </div>
